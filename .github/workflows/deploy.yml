@@ -28,7 +28,7 @@ jobs:
         run: npm run build
         env:
           SITE_BASE: /Router-portal
-          SITE_URL: https://jhjuyel1000-del.github.io/Router-portal
+          SITE_URL: https://routerportals.xyz
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

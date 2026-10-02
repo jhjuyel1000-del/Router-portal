@@ -4,7 +4,7 @@ import { join, dirname } from 'node:path';
 const root = process.cwd();
 const dist = join(root, 'dist');
 const base = (process.env.SITE_BASE || '').replace(/\/$/, '');
-const siteUrl = (process.env.SITE_URL || `https://jhjuyel1000-del.github.io${base || ''}`).replace(/\/$/, '');
+const siteUrl = (process.env.SITE_URL || 'https://routerportals.xyz').replace(/\/$/, '');
 const pageUrl = (path) => `${base}${path}`;
 const canonical = (path) => `${siteUrl}${path}`;
 
