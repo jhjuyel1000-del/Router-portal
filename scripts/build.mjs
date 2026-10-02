@@ -8,6 +8,36 @@ const siteUrl = (process.env.SITE_URL || `https://jhjuyel1000-del.github.io${bas
 const pageUrl = (path) => `${base}${path}`;
 const canonical = (path) => `${siteUrl}${path}`;
 
+const ipProfiles = [
+  {ip:"192.168.0.1", brands:"D-Link, TP-Link ও কিছু Netgear model-এ দেখা যেতে পারে; exact model যাচাই জরুরি।", use:"অনেক home router-এর সম্ভাব্য local gateway ও admin address।", typos:"192.168.0.l, 192.168.o.1, 192.168.0.1., 19216801", queries:"192.168.0.1 login, 192.168.0.1 admin page, 192.168.0.1 not working, D-Link 192.168.0.1", special:"Addressটি common হলেও universal নয়; current Default Gateway-ই বেশি নির্ভরযোগ্য।"},
+  {ip:"10.0.0.1", brands:"Xfinity gateway ও কিছু বিশেষ router/use-case-এ দেখা যায়; সব router-এর default নয়।", use:"10.0.0.0/8 private range-এর সম্ভাব্য local gateway বা admin address।", typos:"10.0.0.0.1, 10.0.0.01, 10.0.0.l, 10.0.o.1", queries:"10.0.0.1 router login, 10.0.0.1 admin panel, 10.0.0.1 not opening, Xfinity 10.0.0.1", special:"কাজ না করলে 192.168.x.x অনুমান না করে connected device-এর gateway দেখুন।"},
+  {ip:"192.168.8.1", brands:"Huawei Mobile WiFi-এর সঙ্গে শক্তিশালী association আছে; অন্য hotspot model-এ আলাদা হতে পারে।", use:"কিছু 4G/5G hotspot বা mobile router-এর local management address।", typos:"192.168.8.l, 192.168.81, 19216881, 192.168.l.1", queries:"192.168.8.1 login, Huawei 192.168.8.1, 192.168.8.1 not opening, 192.168.8.1 WiFi password", special:"যে hotspot/router-এর settings খুলবেন তার Wi‑Fi-তে যুক্ত থাকতে হবে।"},
+  {ip:"192.168.1.254", brands:"কিছু ISP gateway ও নির্দিষ্ট router model-এ দেখা যেতে পারে; IP দেখে brand নিশ্চিত করা যায় না।", use:"কিছু modem-router বা gateway-এর সম্ভাব্য LAN management address।", typos:"192.168.l.254, 192.168.1.25, 192.168.1.254., 1921681254", queries:"192.168.1.254 login, 192.168.1.254 admin, 192.168.1.254 not working, 192.168.1.254 gateway", special:"192.168.1.1 কাজ না করলেও এটি স্বয়ংক্রিয়ভাবে সঠিক হবে না—gateway যাচাই করুন।"},
+  {ip:"192.168.100.1", brands:"কিছু cable modem/gateway, Motorola ও selected ISP equipment-এ দেখা যায়; model-specific।", use:"কিছু modem বা router-এর local administration address।", typos:"192.168.l00.1, 192.168.100.l, 192.168.10.1, 192.168.100.1.", queries:"192.168.100.1 login, modem 192.168.100.1, 192.168.100.1 admin, 192.168.100.1 not working", special:"কিছু network-এ এটি modem-side page, router-side gateway নয়।"},
+  {ip:"192.168.2.1", brands:"Belkin-এর কিছু model-এ documented context আছে; অন্য brand-এ modelভেদে বদলায়।", use:"কিছু home router বা access point-এর সম্ভাব্য local admin address।", typos:"192.168.2.l, 19216821, 192-168-2-1, 192.168.2.1.com", queries:"192.168.2.1 login, Belkin 192.168.2.1, 192.168.2.1 admin, 192.168.2.1 not working", special:"Hyphenated form search result-এ দেখা গেলেও browser address bar-এ dotted IP ব্যবহার করুন।"},
+  {ip:"192.168.10.1", brands:"WAVLINK ও কিছু selected router/access point-এ দেখা যেতে পারে; universal নয়।", use:"কিছু router, repeater বা access point-এর local setup page-এর সম্ভাব্য address।", typos:"192.168.l0.1, 192.168.10.l, 192168101, 192.168.10.", queries:"192.168.10.1 login, 192.168.10.1 router, 192.168.10.1 not opening, 192.168.10.1 password", special:"দুইটি zero বা letter l/o নিয়ে typo বেশি হয়; valid IPv4-তে শুধু digit ও dot থাকে।"},
+  {ip:"192.168.11.1", brands:"কিছু Buffalo AirStation context-এ দেখা যায়; exact device manual ছাড়া নিশ্চিত নয়।", use:"কিছু router বা network device-এর local management address।", typos:"192.168.l.l, 192.168.11.l, 192168111, 192.168.11,1", queries:"192.168.11.1 login, Buffalo 192.168.11.1, 192.168.11.1 admin, 192.168.11.1 not working", special:"192.168.1.1 ও 192.168.11.1 আলাদা address; পুরো IP লিখুন।"},
+  {ip:"192.168.0.254", brands:"কিছু TP-Link, D-Link, Netgear, Tenda বা Zyxel device-এ সম্ভাব্য; model verification প্রয়োজন।", use:"কিছু router, extender বা access point-এর সম্ভাব্য local gateway।", typos:"192.168.o.254, 192.168.0.25, 192 168 0 254, 192.168.0.254.com", queries:"192.168.0.254 login, 192.168.0.254 router, 192.168.0.254 admin, 192.168.0.254 not working", special:"এটি 192.168.0.0/16 private range-এর অংশ; একই address বহু network-এ থাকতে পারে।"},
+  {ip:"192.168.31.1", brands:"Xiaomi router-এর সঙ্গে শক্তিশালী model context আছে; অন্য brand-এ অনুমান করা যাবে না।", use:"কিছু Xiaomi router-এর local setup বা management address।", typos:"192.168.l.l, 192.168.31.l, 192.168.3l.1, 192168311", queries:"192.168.31.1 login, Xiaomi 192.168.31.1, 192.168.31.1 setup, 192.168.31.1 not opening", special:"Xiaomi setup-এ একই network-এ যুক্ত থাকা জরুরি; এটি public Internet login নয়।"},
+  {ip:"192.168.1.253", brands:"কিছু travel router বা managed network device-এ model-specific context আছে; universal brand mapping নয়।", use:"কিছু router, switch বা access point-এর সম্ভাব্য management address।", typos:"192.168.l.253, 192.168.1.25, 192.168.1.254, 192-168-1-253", queries:"192.168.1.253 login, 192.168.1.253 router, 192.168.1.253 admin, 192.168.1.253 not working", special:"কিছু device-এ management port বা VLAN আলাদা হতে পারে; current gateway যাচাই করুন।"}
+];
+function makeIpPage(x){
+  const ip=x.ip, slug=ip.replaceAll('.', '-');
+  return {slug:`/ip/${slug}/`, title:`${ip} Login: Router Admin Page and Troubleshooting | RouterGuide`, description:`Learn how to open ${ip} on your local router network, avoid common typos, find the correct gateway, and troubleshoot access safely.`, label:`${ip} router guide`, h1:`${ip} router login`, searchTerms:`${x.typos}, ${x.queries}`, intro:`${x.use} Use it only from the network that owns the device.`, body:`
+    <div class="action-row"><a class="button" href="http://${ip}/">Open ${ip}</a><a class="button secondary" href="${pageUrl('/find-router-ip/')}">Find my gateway</a><button class="button ghost" type="button" data-copy-ip="${ip}">Copy IP address</button></div>
+    <div class="notice"><strong>Address context:</strong> ${x.special} This is a local/private address, not a public website.</div>
+    <h2>What is ${ip} used for?</h2><p>${ip} may open a router, modem, extender, hotspot, switch, or gateway administration screen when your device is connected to the same Wi‑Fi or Ethernet network. The IP alone does not prove a brand, model, password, or ownership.</p>
+    <h2>How to open the admin panel</h2><ol><li>Connect your phone or computer to the correct router Wi‑Fi or Ethernet network.</li><li>Open the browser <strong>address bar</strong>, not Google or another search box.</li><li>Type <strong>http://${ip}</strong> and press Enter using the exact dotted form.</li><li>At the login screen, use credentials printed on the device, supplied by the ISP, or previously set by the owner.</li><li>After login, change weak or old administrator credentials and save settings carefully.</li></ol>
+    <h2>Brand and device context</h2><p>${x.brands} This is a context clue only. The current Default Gateway shown by your device is more reliable than a generic IP list.</p>
+    <h2>Common typing mistakes</h2><p>People may search for <strong>${x.typos}</strong>. Letter <strong>l</strong> and number <strong>1</strong>, or letter <strong>o</strong> and number <strong>0</strong>, are often confused. Search engines may show results for a typo, but the router requires the correct local address.</p>
+    <h2>If ${ip} does not open</h2><div class="checklist"><div class="check"><span class="step-no">1</span><div><strong>Confirm the network</strong><span>Stay connected to the router you are trying to manage. Turn off mobile data or another active Wi‑Fi while testing.</span></div></div><div class="check"><span class="step-no">2</span><div><strong>Find the actual gateway</strong><span>Use Windows <code>ipconfig</code>, macOS network details, Linux route information, or your phone’s connected Wi‑Fi details. The gateway may be different.</span></div></div><div class="check"><span class="step-no">3</span><div><strong>Test carefully</strong><span>Check power and cable/Wi‑Fi status, try another browser or Ethernet, and review VPN/proxy or extension interference.</span></div></div></div>
+    <h2>Username and password safety</h2><div class="warning"><strong>No universal credential:</strong> Do not assume admin/admin, blank password, or any generic list is correct. Credentials vary by brand, model, firmware, ISP, and previous setup. RouterGuide never receives or stores your password.</div>
+    <h2>Before a factory reset</h2><p>A reset may erase the Wi‑Fi name, Wi‑Fi password, ISP settings, LAN IP, DHCP reservations, port rules, and security configuration. Treat reset as a last resort and follow exact model instructions. A normal reboot is not the same as a factory reset.</p>
+    <h2>Related router help</h2><p><a href="${pageUrl('/router-login-not-working/')}">Router login troubleshooting</a>, <a href="${pageUrl('/forgot-router-password/')}">forgotten password help</a>, <a href="${pageUrl('/factory-reset-router/')}">factory reset warnings</a>, and <a href="${pageUrl('/find-router-ip/')}">find your router IP</a>.</p>
+    <p><strong>Search intent covered:</strong> ${x.queries}. This page does not guarantee that every device uses ${ip}.</p>`};
+}
+const ipPages = ipProfiles.map(makeIpPage);
+
 const pages = [
   {
     slug: '/',
@@ -25,6 +55,7 @@ const pages = [
         ${ipCard('192.168.8.1','Selected mobile routers — check your gateway','/find-router-ip/')}
         ${ipCard('Find your IP','Use your device settings','/find-router-ip/')}
         ${ipCard('Login problem','Fix an admin page that will not open','/router-login-not-working/')}
+        ${ipPages.slice(0,6).map(p => ipCard(p.h1.replace(' router login',''), p.description, p.slug)).join('')}
       </div></section>
       <section class="section quick"><div class="section-head"><div><span class="eyebrow">Three quick steps</span><h2>Get to the right screen</h2></div></div><div class="quick-grid">
         <div class="quick-step"><span class="step-no">1</span><div><h3>Connect locally</h3><p>Join your router’s Wi-Fi or connect by Ethernet before opening a local IP.</p></div></div>
@@ -89,6 +120,7 @@ const pages = [
     slug: '/terms/', title: 'RouterGuide Terms of Use and Safety Disclaimer | RouterGuide', description: 'Read the RouterGuide terms of use, local-router safety disclaimer, accuracy limits, and responsible access rules.', label: 'Terms of use', h1: 'Use RouterGuide responsibly', intro: 'RouterGuide provides general information. You are responsible for confirming that an instruction fits your own router, network, and permission level.', body: `
       <h2>Informational use</h2><p>RouterGuide pages are general educational and troubleshooting information. They are not a guarantee that a specific IP, credential, setting, or reset process applies to every router.</p><h2>Authorised access only</h2><p>Use local admin instructions only for a router and network you own or are authorised to manage. Do not use the guides to access someone else’s network.</p><h2>Before changing settings</h2><ul><li>Confirm the router model and current network.</li><li>Keep setup information available.</li><li>Understand what a change or reset may remove.</li><li>Do not share passwords or private network identifiers with this site.</li></ul><h2>Accuracy limits</h2><p>Router interfaces and instructions can change with model, firmware, region, and provider configuration. When a page says an address is common, it does not mean that address is guaranteed for your device.</p><h2>External destinations</h2><p>A local-router button may open an address on your own network. RouterGuide does not control that router interface or its content.</p><h2>Acceptance</h2><p>By using the website, you agree to use the information lawfully, safely, and with appropriate permission.</p>`
   }
+  ,...ipPages
 ];
 
 function ipCard(label, text, href){ return `<div class="card"><span class="ip-chip">${label}</span><p>${text}</p><a href="${pageUrl(href)}">View the guide →</a></div>`; }
@@ -106,7 +138,7 @@ await rm(dist, { recursive: true, force: true });
 await mkdir(join(dist, 'assets'), { recursive: true });
 await mkdir(join(dist, 'assets'), { recursive: true });
 for (const asset of ['style.css','logo.svg','favicon.svg']) await copyFile(join(root,'public/assets',asset), join(dist,'assets',asset));
-const searchIndex = pages.map(p => ({ title:p.h1, description:p.description, path:pageUrl(p.slug), keywords:[p.h1, p.label, p.slug.replaceAll('/',' ').replaceAll('-',' ')] }));
+const searchIndex = pages.map(p => ({ title:p.h1, description:p.description, path:pageUrl(p.slug), keywords:[p.h1, p.label, p.searchTerms || '', p.slug.replaceAll('/',' ').replaceAll('-',' ')] }));
 const appJs = `(() => {
   const toggle = document.querySelector('.nav-toggle');
   const links = document.querySelector('.nav-links');
@@ -116,7 +148,8 @@ const appJs = `(() => {
       toggle.setAttribute('aria-expanded', String(open));
     });
   }
-  const form = document.querySelector('#site-search');
+  document.querySelectorAll('[data-copy-ip]').forEach(btn => btn.addEventListener('click', async () => { try { await navigator.clipboard.writeText(btn.dataset.copyIp); const old = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = old, 1200); } catch { btn.textContent = 'Copy manually'; } }));
+    const form = document.querySelector('#site-search');
   const input = document.querySelector('#search-input');
   const results = document.querySelector('#search-results');
   if (form && input && results) {
