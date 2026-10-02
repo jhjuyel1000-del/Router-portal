@@ -1,3 +1,3 @@
 export default {
-  logoUrl: "https://jhjuyel1000-del.github.io/Router-portal/assets/logo.svg"
+  logoUrl: "https://router-portal.pages.dev/assets/logo.svg"
 };
