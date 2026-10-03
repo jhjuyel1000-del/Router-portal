@@ -1,1 +1,628 @@
-{"routes":[{"path":"/","title":"Router Portal Home"},{"path":"/router-login/","title":"Router Admin Login"},{"path":"/find-router-ip/","title":"Find Router IP Address"},{"path":"/router-login-not-working/","title":"Router Login Not Working"},{"path":"/forgot-router-password/","title":"Forgot Router Admin Password"},{"path":"/change-wifi-password/","title":"Change Wi-Fi Password"},{"path":"/factory-reset-router/","title":"Factory Reset a Router"},{"path":"/private-ip-address/","title":"Private IP Address Explained"}]}
+{
+  "routes": [
+    {
+      "path": "/",
+      "title": "Find your router login page"
+    },
+    {
+      "path": "/router-login/",
+      "title": "How to log in to your router"
+    },
+    {
+      "path": "/find-router-ip/",
+      "title": "How to find your router IP address"
+    },
+    {
+      "path": "/router-login-not-working/",
+      "title": "Router login is not working"
+    },
+    {
+      "path": "/forgot-router-password/",
+      "title": "Forgot your router admin password?"
+    },
+    {
+      "path": "/change-wifi-password/",
+      "title": "Change your Wi-Fi password"
+    },
+    {
+      "path": "/factory-reset-router/",
+      "title": "Factory reset a router carefully"
+    },
+    {
+      "path": "/ip/192-168-1-1/",
+      "title": "192.168.1.1 router login"
+    },
+    {
+      "path": "/about/",
+      "title": "Clear router help for everyday networks"
+    },
+    {
+      "path": "/contact/",
+      "title": "Help us keep router guides accurate"
+    },
+    {
+      "path": "/editorial-policy/",
+      "title": "How Router Portal pages are reviewed"
+    },
+    {
+      "path": "/information-policy/",
+      "title": "Information that is clear about its limits"
+    },
+    {
+      "path": "/privacy/",
+      "title": "Your router credentials stay with you"
+    },
+    {
+      "path": "/terms/",
+      "title": "Use Router Portal responsibly"
+    },
+    {
+      "path": "/ip/192-168-0-1/",
+      "title": "192.168.0.1 router login"
+    },
+    {
+      "path": "/ip/10-0-0-1/",
+      "title": "10.0.0.1 router login"
+    },
+    {
+      "path": "/ip/192-168-8-1/",
+      "title": "192.168.8.1 router login"
+    },
+    {
+      "path": "/ip/192-168-1-254/",
+      "title": "192.168.1.254 router login"
+    },
+    {
+      "path": "/ip/192-168-100-1/",
+      "title": "192.168.100.1 router login"
+    },
+    {
+      "path": "/ip/192-168-2-1/",
+      "title": "192.168.2.1 router login"
+    },
+    {
+      "path": "/ip/192-168-10-1/",
+      "title": "192.168.10.1 router login"
+    },
+    {
+      "path": "/ip/192-168-11-1/",
+      "title": "192.168.11.1 router login"
+    },
+    {
+      "path": "/ip/192-168-0-254/",
+      "title": "192.168.0.254 router login"
+    },
+    {
+      "path": "/ip/192-168-31-1/",
+      "title": "192.168.31.1 router login"
+    },
+    {
+      "path": "/ip/192-168-1-253/",
+      "title": "192.168.1.253 router login"
+    },
+    {
+      "path": "/brand/tp-link/",
+      "title": "TP-Link router login"
+    },
+    {
+      "path": "/brand/netgear/",
+      "title": "NETGEAR router login"
+    },
+    {
+      "path": "/brand/d-link/",
+      "title": "D-Link router login"
+    },
+    {
+      "path": "/brand/linksys/",
+      "title": "Linksys router login"
+    },
+    {
+      "path": "/brand/tenda/",
+      "title": "Tenda router login"
+    },
+    {
+      "path": "/brand/huawei/",
+      "title": "Huawei router login"
+    },
+    {
+      "path": "/brand/asus/",
+      "title": "ASUS router login"
+    },
+    {
+      "path": "/brand/zte/",
+      "title": "ZTE router login"
+    },
+    {
+      "path": "/brand/belkin/",
+      "title": "Belkin router login"
+    },
+    {
+      "path": "/brand/arris/",
+      "title": "ARRIS router login"
+    },
+    {
+      "path": "/brand/cisco/",
+      "title": "Cisco router login"
+    },
+    {
+      "path": "/brand/xiaomi/",
+      "title": "Xiaomi router login"
+    },
+    {
+      "path": "/router-model-login/",
+      "title": "Router model login lookup"
+    },
+    {
+      "path": "/default-router-passwords/",
+      "title": "Default router usernames and passwords directory"
+    },
+    {
+      "path": "/find-saved-wifi-password/",
+      "title": "How to find a saved Wi-Fi password"
+    },
+    {
+      "path": "/change-router-admin-password/",
+      "title": "How to change your router admin password"
+    },
+    {
+      "path": "/port-forwarding/",
+      "title": "How to port forward on a router (and when to use port triggering)"
+    },
+    {
+      "path": "/tools/port-checker/",
+      "title": "Open port checker"
+    },
+    {
+      "path": "/tools/what-is-my-ip/",
+      "title": "What is my public and local IP address?"
+    },
+    {
+      "path": "/tools/ping-test/",
+      "title": "Ping, latency, and packet-loss test"
+    },
+    {
+      "path": "/tools/wifi-qr-code/",
+      "title": "Wi-Fi QR code generator"
+    },
+    {
+      "path": "/traceroute/",
+      "title": "How to run and interpret traceroute on Windows, macOS, and Linux"
+    },
+    {
+      "path": "/tools/cidr-subnet-calculator/",
+      "title": "CIDR subnet calculator: IP range, subnet mask and usable hosts"
+    },
+    {
+      "path": "/reviews/best-wifi-routers-for-gaming/",
+      "title": "Best Wi-Fi routers for gaming"
+    },
+    {
+      "path": "/reviews/wifi-extenders-and-mesh/",
+      "title": "Wi-Fi extender vs mesh: choose the right coverage fix"
+    },
+    {
+      "path": "/gateway/find-router-ip-windows-11/",
+      "title": "Windows 11-এ router IP খোঁজা"
+    },
+    {
+      "path": "/gateway/find-router-ip-macos/",
+      "title": "macOS-এ router IP খোঁজা"
+    },
+    {
+      "path": "/gateway/find-router-ip-android/",
+      "title": "Android-এ default gateway খোঁজা"
+    },
+    {
+      "path": "/gateway/find-router-ip-iphone-ipad/",
+      "title": "iPhone/iPad-এ router address খোঁজা"
+    },
+    {
+      "path": "/gateway/find-router-ip-linux/",
+      "title": "Linux-এ default gateway খোঁজা"
+    },
+    {
+      "path": "/gateway/192-168-vs-10-private-ip/",
+      "title": "192.168.x.x বনাম 10.x.x.x private IP"
+    },
+    {
+      "path": "/gateway/router-login-by-hostname/",
+      "title": "Router hostname দিয়ে login"
+    },
+    {
+      "path": "/gateway/ipv6-router-login/",
+      "title": "IPv6 দিয়ে router admin page খোলা"
+    },
+    {
+      "path": "/models/how-to-identify-router-model/",
+      "title": "Router model ও hardware revision শনাক্ত করা"
+    },
+    {
+      "path": "/models/hardware-revision/",
+      "title": "Hardware revision কেন login নির্দেশনা বদলায়"
+    },
+    {
+      "path": "/models/router-login-evidence-card/",
+      "title": "Verified router evidence card কীভাবে পড়বেন"
+    },
+    {
+      "path": "/isp/router-login-by-isp/",
+      "title": "ISP অনুযায়ী router login প্রস্তুতি"
+    },
+    {
+      "path": "/isp/isp-router-admin-access/",
+      "title": "ISP router বনাম নিজের router admin access"
+    },
+    {
+      "path": "/models/firmware-isp-variants/",
+      "title": "Firmware ও ISP variant login differences"
+    },
+    {
+      "path": "/models/router-manuals-and-support/",
+      "title": "Router manual ও official support খোঁজা"
+    },
+    {
+      "path": "/brand-router-model-search/",
+      "title": "Brand/model search ও verified index"
+    },
+    {
+      "path": "/security/after-router-login-checklist/",
+      "title": "Login করার পর router security checklist"
+    },
+    {
+      "path": "/security/router-admin-account-types/",
+      "title": "Router admin account ও credential states"
+    },
+    {
+      "path": "/security/firmware-update-safety/",
+      "title": "Router firmware update নিরাপদে করা"
+    },
+    {
+      "path": "/security/firmware-end-of-life/",
+      "title": "Router firmware end-of-life ও replacement"
+    },
+    {
+      "path": "/security/remote-management-risk/",
+      "title": "Remote router administration-এর ঝুঁকি"
+    },
+    {
+      "path": "/security/upnp-explained/",
+      "title": "UPnP কী এবং নিরাপদে review করা"
+    },
+    {
+      "path": "/security/wps-security/",
+      "title": "WPS security ও বন্ধ করার সিদ্ধান্ত"
+    },
+    {
+      "path": "/security/guest-network-vs-iot-network/",
+      "title": "Guest network বনাম IoT network"
+    },
+    {
+      "path": "/security/router-firewall-basics/",
+      "title": "Router firewall basics ও verification"
+    },
+    {
+      "path": "/security/hacked-router-triage/",
+      "title": "Router compromise সন্দেহ হলে triage"
+    },
+    {
+      "path": "/wifi/slow-wifi-diagnosis/",
+      "title": "Slow Wi-Fi diagnosis: layered flow"
+    },
+    {
+      "path": "/wifi/frequent-disconnects/",
+      "title": "Wi-Fi বারবার disconnect হলে কী পরীক্ষা করবেন"
+    },
+    {
+      "path": "/wifi/channel-interference/",
+      "title": "Wi-Fi channel ও interference নির্বাচন"
+    },
+    {
+      "path": "/wifi/2-4ghz-vs-5ghz-vs-6ghz/",
+      "title": "2.4GHz বনাম 5GHz বনাম 6GHz"
+    },
+    {
+      "path": "/wifi/wpa2-vs-wpa3/",
+      "title": "WPA2 বনাম WPA3: কোন Wi-Fi security"
+    },
+    {
+      "path": "/wifi/ssid-change-checklist/",
+      "title": "SSID বদলানোর আগে ও পরে checklist"
+    },
+    {
+      "path": "/wifi/wifi-password-sharing-safely/",
+      "title": "Wi-Fi password/QR নিরাপদে share করা"
+    },
+    {
+      "path": "/wifi/bufferbloat-and-latency/",
+      "title": "Bufferbloat ও gaming latency"
+    },
+    {
+      "path": "/network/dhcp-reservation-vs-static-ip/",
+      "title": "DHCP reservation বনাম static IP"
+    },
+    {
+      "path": "/network/dns-settings-router/",
+      "title": "Router DNS settings: choice ও troubleshooting"
+    },
+    {
+      "path": "/network/bridge-mode-vs-ap-mode/",
+      "title": "Bridge mode বনাম access point mode"
+    },
+    {
+      "path": "/network/repeater-vs-access-point/",
+      "title": "Repeater, mesh ও access point-এর পার্থক্য"
+    },
+    {
+      "path": "/network/double-nat-diagnosis/",
+      "title": "Double NAT শনাক্ত ও ঠিক করা"
+    },
+    {
+      "path": "/network/cgnat-explained/",
+      "title": "CGNAT কী এবং port forwarding কেন ব্যর্থ"
+    },
+    {
+      "path": "/network/ipv6-home-router-basics/",
+      "title": "Home router-এ IPv6 basics"
+    },
+    {
+      "path": "/network/mtu-mss-home-network/",
+      "title": "MTU ও MSS: home-network troubleshooting"
+    },
+    {
+      "path": "/network/port-forwarding-vs-port-triggering/",
+      "title": "Port forwarding বনাম port triggering"
+    },
+    {
+      "path": "/network/dmz-vs-port-forwarding/",
+      "title": "DMZ host বনাম নির্দিষ্ট port forwarding"
+    },
+    {
+      "path": "/tools/gateway-self-check/",
+      "title": "Gateway self-check worksheet"
+    },
+    {
+      "path": "/tools/local-vs-public-ip-check/",
+      "title": "Local IP বনাম public IP comparison tool"
+    },
+    {
+      "path": "/tools/dns-leak-router-check/",
+      "title": "Router DNS leak self-check"
+    },
+    {
+      "path": "/tools/port-forwarding-worksheet/",
+      "title": "Port-forwarding rule worksheet"
+    },
+    {
+      "path": "/reviews/router-for-apartment/",
+      "title": "ছোট apartment-এর জন্য router নির্বাচন"
+    },
+    {
+      "path": "/reviews/router-for-home-server/",
+      "title": "Home server/NAS-এর জন্য router নির্বাচন"
+    },
+    {
+      "path": "/troubleshooting/router-led-lights/",
+      "title": "Router LED lights: what blinking, red and orange indicators mean"
+    },
+    {
+      "path": "/basics/modem-router-gateway/",
+      "title": "Modem vs router vs gateway explained"
+    },
+    {
+      "path": "/troubleshooting/router-overheating/",
+      "title": "Router overheating: safe checks and fixes"
+    },
+    {
+      "path": "/maintenance/when-to-replace-router/",
+      "title": "When to replace a router"
+    },
+    {
+      "path": "/setup/new-router-setup-checklist/",
+      "title": "New router setup checklist"
+    },
+    {
+      "path": "/setup/router-replacement-migration/",
+      "title": "Router replacement migration"
+    },
+    {
+      "path": "/maintenance/router-config-backup-restore/",
+      "title": "router configuration backup restore"
+    },
+    {
+      "path": "/maintenance/router-firmware-recovery/",
+      "title": "router firmware recovery"
+    },
+    {
+      "path": "/maintenance/router-firmware-downgrade/",
+      "title": "router firmware downgrade"
+    },
+    {
+      "path": "/maintenance/router-reboot-schedule/",
+      "title": "router reboot schedule"
+    },
+    {
+      "path": "/diagnostics/read-router-logs/",
+      "title": "how to read router logs"
+    },
+    {
+      "path": "/security/unknown-device-on-wifi/",
+      "title": "unknown device connected to WiFi"
+    },
+    {
+      "path": "/performance/router-qos-guide/",
+      "title": "router QoS gaming"
+    },
+    {
+      "path": "/security/router-parental-controls/",
+      "title": "router parental controls"
+    },
+    {
+      "path": "/security/wifi-device-schedules/",
+      "title": "pause WiFi device schedule"
+    },
+    {
+      "path": "/security/router-dns-filtering/",
+      "title": "router DNS filtering"
+    },
+    {
+      "path": "/network/dynamic-dns-router/",
+      "title": "dynamic DNS router"
+    },
+    {
+      "path": "/network/router-vpn-client-server/",
+      "title": "router VPN client vs server"
+    },
+    {
+      "path": "/wifi/wi-fi-7-explained/",
+      "title": "Wi-Fi 7 features"
+    },
+    {
+      "path": "/wifi/wi-fi-7-mlo/",
+      "title": "Wi-Fi 7 MLO"
+    },
+    {
+      "path": "/wifi/6ghz-wifi-compatibility/",
+      "title": "6GHz WiFi compatibility"
+    },
+    {
+      "path": "/wifi/320mhz-channel-width/",
+      "title": "320MHz WiFi"
+    },
+    {
+      "path": "/wifi/band-steering/",
+      "title": "band steering router"
+    },
+    {
+      "path": "/wifi/fast-roaming/",
+      "title": "WiFi fast roaming"
+    },
+    {
+      "path": "/wifi/ofdma-vs-mu-mimo/",
+      "title": "OFDMA vs MU-MIMO"
+    },
+    {
+      "path": "/wifi/dfs-channels/",
+      "title": "DFS channel WiFi"
+    },
+    {
+      "path": "/diagnostics/wifi-analyzer-results/",
+      "title": "WiFi analyzer results"
+    },
+    {
+      "path": "/diagnostics/rssi-signal-strength/",
+      "title": "WiFi RSSI meaning"
+    },
+    {
+      "path": "/wifi/channel-width-guide/",
+      "title": "WiFi channel width guide"
+    },
+    {
+      "path": "/wifi/router-placement-floor-plan/",
+      "title": "best router placement"
+    },
+    {
+      "path": "/wifi/ethernet-backhaul-mesh/",
+      "title": "Ethernet backhaul mesh"
+    },
+    {
+      "path": "/troubleshooting/mesh-backhaul-problems/",
+      "title": "mesh backhaul not working"
+    },
+    {
+      "path": "/network/ethernet-cable-categories/",
+      "title": "Cat5e Cat6 Cat6a router"
+    },
+    {
+      "path": "/network/2-5gbe-router-ports/",
+      "title": "2.5GbE router"
+    },
+    {
+      "path": "/diagnostics/internet-speed-vs-wifi-speed/",
+      "title": "internet speed vs WiFi speed"
+    },
+    {
+      "path": "/diagnostics/router-throughput-test/",
+      "title": "router throughput test"
+    },
+    {
+      "path": "/network/iptv-igmp-router/",
+      "title": "router IPTV IGMP"
+    },
+    {
+      "path": "/network/sip-alg-voip-router/",
+      "title": "SIP ALG router"
+    },
+    {
+      "path": "/network/printer-discovery-router/",
+      "title": "printer not visible WiFi"
+    },
+    {
+      "path": "/network/casting-guest-wifi/",
+      "title": "Chromecast guest WiFi"
+    },
+    {
+      "path": "/network/nas-router-discovery/",
+      "title": "NAS not visible network"
+    },
+    {
+      "path": "/troubleshooting/port-forwarding-not-working/",
+      "title": "port forwarding not working"
+    },
+    {
+      "path": "/network/nat-loopback-explained/",
+      "title": "NAT loopback router"
+    },
+    {
+      "path": "/security/router-config-file-security/",
+      "title": "router config backup security"
+    },
+    {
+      "path": "/security/router-admin-session-security/",
+      "title": "secure router admin login"
+    },
+    {
+      "path": "/security/router-password-manager/",
+      "title": "store router password safely"
+    },
+    {
+      "path": "/models/find-router-hardware-revision/",
+      "title": "find router hardware version"
+    },
+    {
+      "path": "/models/read-router-firmware-release-notes/",
+      "title": "router firmware release notes"
+    },
+    {
+      "path": "/models/router-support-lifecycle/",
+      "title": "router firmware support end date"
+    },
+    {
+      "path": "/models/router-model-evidence-card/",
+      "title": "router model specifications and support"
+    },
+    {
+      "path": "/model/tp-link/archer-c6/",
+      "title": "TP-Link Archer C6 router login"
+    },
+    {
+      "path": "/model/netgear/r7000/",
+      "title": "NETGEAR R7000 router login"
+    },
+    {
+      "path": "/model/d-link/dir-615/",
+      "title": "D-Link DIR-615 router login"
+    },
+    {
+      "path": "/model/tenda/ac10/",
+      "title": "Tenda AC10 router login"
+    },
+    {
+      "path": "/model/huawei/b535/",
+      "title": "Huawei B535 router login"
+    },
+    {
+      "path": "/model/asus/rt-ac68u/",
+      "title": "ASUS RT-AC68U router login"
+    }
+  ]
+}
