@@ -3,7 +3,6 @@ import { join, dirname } from 'node:path';
 import { makeRecommendedPages } from './recommended-pages.mjs';
 import { makeFiftyPages } from './fifty-pages.mjs';
 import { makeNewPages } from './new-pages.mjs';
-import { makeLegacyModelPages } from './legacy-model-pages.mjs';
 import { makeModelPages } from './model-pages.mjs';
 
 const root = process.cwd();
@@ -165,10 +164,9 @@ const pages = [
   }
   ,...ipPages
   ,...brandPages
-  ,...makeRecommendedPages(pageUrl)
-  ,...makeFiftyPages(pageUrl)
-  ,...makeLegacyModelPages(pageUrl)
-  ,...makeNewPages(pageUrl)
+	  ,...makeRecommendedPages(pageUrl)
+	  ,...makeFiftyPages(pageUrl)
+	  ,...makeNewPages(pageUrl)
   ,...makeModelPages(pageUrl)
 ];
 
