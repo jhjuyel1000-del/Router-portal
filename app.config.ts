@@ -1,3 +1,3 @@
 export default {
-  logoUrl: "https://routerportals.xyz/assets/logo.svg"
+  logoUrl: "https://routerportals.xyz/assets/logo.png"
 };
