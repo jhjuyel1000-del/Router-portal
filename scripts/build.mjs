@@ -211,7 +211,7 @@ for (const page of pages) { const file = page.slug === '/' ? join(dist,'index.ht
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map(p=>`  <url><loc>${canonical(p.slug)}</loc></url>`).join('\n')}\n</urlset>\n`;
   await writeFile(join(dist,'sitemap.xml'), sitemap);
   await writeFile(join(dist,'sitemap.txt'), `${pages.map(p=>canonical(p.slug)).join('\n')}\n`);
-  await writeFile(join(dist,'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${canonical('/sitemap.xml')}\n`);
+  await writeFile(join(dist,'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${canonical('/sitemap.xml')}\nSitemap: ${canonical('/sitemap.txt')}\n`);
   await writeFile(join(dist,'manus-routes.json'), JSON.stringify({routes:pages.map(p=>({path:pageUrl(p.slug),title:p.h1}))}, null, 2));
   await writeFile(join(dist,'404.html'), layout({slug:'/404.html',noindex:true,title:'Page Not Found | RouterGuide',description:'The router guide page could not be found.',label:'Not found',h1:'That page is not here',intro:'Try a popular router login guide instead.',body:`<main class="content-layout"><article class="prose"><h2>Try a common guide</h2><p><a href="${pageUrl('/router-login/')}">Router admin login</a> or <a href="${pageUrl('/find-router-ip/')}">find your router IP</a>.</p></article></main>`}));
 console.log(`Built ${pages.length} pages at ${dist}`);
