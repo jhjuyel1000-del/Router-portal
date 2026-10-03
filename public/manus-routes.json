@@ -623,6 +623,10 @@
     {
       "path": "/model/asus/rt-ac68u/",
       "title": "ASUS RT-AC68U router login"
+    },
+    {
+      "path": "/all-guides/",
+      "title": "Browse all router guides and tools"
     }
   ]
 }
