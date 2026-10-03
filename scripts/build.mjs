@@ -1,5 +1,6 @@
-import { mkdir, rm, writeFile, copyFile } from 'node:fs/promises';
+import { mkdir, rm, writeFile, copyFile, readFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
+import { makeRecommendedPages } from './recommended-pages.mjs';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
@@ -90,6 +91,7 @@ const pages = [
         ${ipPages.slice(0,6).map(p => ipCard(p.h1.replace(' router login',''), p.description, p.slug)).join('')}
       </div></section>
       <section class="section"><div class="section-head"><div><span class="eyebrow">Brand guides</span><h2>Find help by router brand</h2><p class="section-intro">Choose a brand for matching IP addresses, model context and safe admin-password guidance.</p></div></div><div class="grid brand-grid">${brandPages.map(p => ipCard(p.h1.replace(' router login',''), p.description, p.slug)).join('')}</div></section>
+      <section class="section"><div class="section-head"><div><span class="eyebrow">New guides and tools</span><h2>Go beyond router login</h2><p class="section-intro">Model lookup, saved-password recovery, diagnostics and coverage guidance—built as separate, useful journeys.</p></div></div><div class="grid">${makeRecommendedPages(pageUrl).map(p => ipCard(p.h1, p.description, p.slug)).join("")}</div></section>
       <section class="section quick"><div class="section-head"><div><span class="eyebrow">Three quick steps</span><h2>Get to the right screen</h2></div></div><div class="quick-grid">
         <div class="quick-step"><span class="step-no">1</span><div><h3>Connect locally</h3><p>Join your router’s Wi-Fi or connect by Ethernet before opening a local IP.</p></div></div>
         <div class="quick-step"><span class="step-no">2</span><div><h3>Use the address bar</h3><p>Type the IP into your browser’s address bar, not into a search engine.</p></div></div>
@@ -158,11 +160,12 @@ const pages = [
   }
   ,...ipPages
   ,...brandPages
+  ,...makeRecommendedPages(pageUrl)
 ];
 
 function ipCard(label, text, href){ return `<div class="card"><span class="ip-chip">${label}</span><p>${text}</p><a href="${pageUrl(href)}">View the guide →</a></div>`; }
 function escapeHtml(value){ return value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function header(){ return `<header class="site-header"><nav class="nav" aria-label="Primary navigation"><a class="brand" href="${pageUrl('/')}" aria-label="Router Portal home"><img src="${pageUrl('/assets/logo.png')}" alt="Router Portal" width="172" height="50"></a><button class="nav-toggle" aria-expanded="false" aria-controls="primary-links">Menu</button><div id="primary-links" class="nav-links"><a href="${pageUrl('/router-login/')}">Router Login</a><a href="${pageUrl('/ip/192-168-1-1/')}">192.168.1.1</a><a href="${pageUrl('/find-router-ip/')}">Find IP</a><a href="${pageUrl('/brand/tp-link/')}">Brands</a><a href="${pageUrl('/router-login-not-working/')}">Login Help</a></div></nav></header>`; }
+function header(){ return `<header class="site-header"><nav class="nav" aria-label="Primary navigation"><a class="brand" href="${pageUrl('/')}" aria-label="Router Portal home"><img src="${pageUrl('/assets/logo.png')}" alt="Router Portal" width="172" height="50"></a><button class="nav-toggle" aria-expanded="false" aria-controls="primary-links">Menu</button><div id="primary-links" class="nav-links"><a href="${pageUrl('/router-login/')}">Router Login</a><a href="${pageUrl('/ip/192-168-1-1/')}">192.168.1.1</a><a href="${pageUrl('/find-router-ip/')}">Find IP</a><a href="${pageUrl('/brand/tp-link/')}">Brands</a><a href="${pageUrl('/tools/what-is-my-ip/')}">Tools</a><a href="${pageUrl('/router-login-not-working/')}">Login Help</a></div></nav></header>`; }
 function footer(){ return `<footer class="site-footer"><div class="footer-inner"><div><a class="brand" href="${pageUrl('/')}" aria-label="Router Portal home"><img src="${pageUrl('/assets/logo.png')}" alt="Router Portal" width="172" height="50"></a><p>Simple, safety-first help for router IP addresses, admin access, and home-network problems.</p></div><div><strong>Start here</strong><p><a href="${pageUrl('/router-login/')}">Router login</a><br><a href="${pageUrl('/find-router-ip/')}">Find router IP</a><br><a href="${pageUrl('/router-login-not-working/')}">Login troubleshooting</a><br><a href="${pageUrl('/ip/192-168-1-1/')}">192.168.1.1 guide</a></p></div><div><strong>About and policies</strong><p><a href="${pageUrl('/about/')}">About</a> · <a href="${pageUrl('/contact/')}">Corrections</a><br><a href="${pageUrl('/editorial-policy/')}">Editorial policy</a><br><a href="${pageUrl('/information-policy/')}">Information policy</a><br><a href="${pageUrl('/privacy/')}">Privacy</a> · <a href="${pageUrl('/terms/')}">Terms</a></p></div></div></footer>`; }
 function searchBox(){ return `<div class="search-wrap"><form class="search-shell" id="site-search"><label class="sr-only" for="search-input">Search router help</label><input id="search-input" autocomplete="off" placeholder="Try 192.168.1.1 or router login problem"><button class="button" type="submit">Search</button></form><div id="search-results" class="search-results" aria-live="polite"></div></div>`; }
 function layout(page){
@@ -173,7 +176,7 @@ function layout(page){
   const robotsTag = `<meta name="robots" content="${isNoindex ? 'noindex,follow' : 'index,follow'}">`;
   const socialTags = isNoindex ? '' : `<meta property="og:site_name" content="Router Portal"><meta property="og:title" content="${page.title}"><meta property="og:description" content="${page.description}"><meta property="og:url" content="${canonical(page.slug)}"><meta property="og:type" content="website"><meta property="og:image" content="${canonical('/assets/logo.png')}"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${page.title}"><meta name="twitter:description" content="${page.description}"><meta name="twitter:image" content="${canonical('/assets/logo.png')}">`;
   const schema = isNoindex ? '' : (() => { const data = { '@context':'https://schema.org','@type':page.home?'WebSite':'WebPage',name:page.home?'Router Portal':page.title,url:canonical(page.slug),description:page.description }; if (page.home) data.publisher = { '@type':'Organization',name:'Router Portal',url:siteUrl,logo:{ '@type':'ImageObject',url:canonical('/assets/logo.png') } }; return `<script type="application/ld+json">${JSON.stringify(data)}</script>`; })();
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${page.title}</title><meta name="description" content="${page.description}"><meta name="theme-color" content="#2f6fed"><meta name="google-site-verification" content="iah_huluCmfWfZhIDsoW2YW1HP9HJmICG1rkl1VXRqk">${robotsTag}${canonicalTag}<link rel="icon" href="${pageUrl('/assets/favicon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="${pageUrl('/assets/style.css')}">${socialTags}${schema}</head><body><a class="skip-link" href="#main">Skip to content</a>${header()}${hero}<div id="main">${main}</div>${footer()}<script src="${pageUrl('/assets/app.js')}" defer></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${page.title}</title><meta name="description" content="${page.description}"><meta name="keywords" content="${escapeHtml((page.searchTerms || '').split(',').slice(0,8).join(', '))}"><meta name="theme-color" content="#2f6fed"><meta name="google-site-verification" content="iah_huluCmfWfZhIDsoW2YW1HP9HJmICG1rkl1VXRqk">${robotsTag}${canonicalTag}<link rel="icon" href="${pageUrl('/assets/favicon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="${pageUrl('/assets/style.css')}">${socialTags}${schema}</head><body><a class="skip-link" href="#main">Skip to content</a>${header()}${hero}<div id="main">${main}</div>${footer()}<script src="${pageUrl('/assets/app.js')}" defer></script></body></html>`;
 }
 
 await rm(dist, { recursive: true, force: true });
@@ -181,7 +184,9 @@ await mkdir(join(dist, 'assets'), { recursive: true });
 await mkdir(join(dist, 'assets'), { recursive: true });
 for (const asset of ['style.css','logo.png','favicon.svg']) await copyFile(join(root,'public/assets',asset), join(dist,'assets',asset));
 const searchIndex = pages.map(p => ({ title:p.h1, description:p.description, path:pageUrl(p.slug), keywords:[p.h1, p.label, p.searchTerms || '', p.slug.replaceAll('/',' ').replaceAll('-',' ')] }));
-const appJs = `(() => {
+const qrLibrary = await readFile(join(root, 'node_modules/qrcode-generator/qrcode.js'), 'utf8');
+const appJs = qrLibrary + `
+(() => {
   const toggle = document.querySelector('.nav-toggle');
   const links = document.querySelector('.nav-links');
   if (toggle && links) {
@@ -207,6 +212,14 @@ const appJs = `(() => {
     input.addEventListener('input', show);
     form.addEventListener('submit', e => { e.preventDefault(); const first = results.querySelector('a'); if (first) location.href = first.href; else show(); });
   }
+  const cidrBtn=document.querySelector('#cidr-button');
+  if(cidrBtn){cidrBtn.addEventListener('click',()=>{const input=document.querySelector('#cidr-input').value.trim();const out=document.querySelector('#cidr-result');const m=input.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)\/(\d|[12]\d|3[0-2])$/);if(!m){out.textContent='Enter a valid IPv4 CIDR such as 192.168.1.0/24.';return;}const oct=m.slice(1,5).map(Number), prefix=Number(m[5]);if(oct.some(x=>x>255)){out.textContent='Each IPv4 octet must be between 0 and 255.';return;}const ip=(((oct[0]*256+oct[1])*256+oct[2])*256+oct[3])>>>0;const mask=prefix===0?0:(0xffffffff << (32-prefix))>>>0;const network=(ip&mask)>>>0;const broadcast=(network + (2**(32-prefix)-1))>>>0;const fmt=n=>[(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.');const total=2**(32-prefix);const usable=prefix>=31? (prefix===32?1:2):Math.max(0,total-2);out.innerHTML='<strong>'+fmt(network)+'/'+prefix+'</strong><br>Mask: '+fmt(mask)+' · Network: '+fmt(network)+' · Broadcast: '+fmt(broadcast)+'<br>Range: '+fmt(prefix>=31?network:network+1)+' – '+fmt(prefix>=31?broadcast:broadcast-1)+' · Total: '+total+' · Conventional usable: '+usable;});}
+  const qrBtn=document.querySelector('#wifi-qr-button');
+  if(qrBtn){qrBtn.addEventListener('click',()=>{const ssid=document.querySelector('#wifi-ssid').value, pass=document.querySelector('#wifi-password').value, sec=document.querySelector('#wifi-security').value, hidden=document.querySelector('#wifi-hidden').checked?'true':'false', out=document.querySelector('#wifi-qr-preview');if(!ssid){out.textContent='Enter the network name first. Nothing is sent to Router Portal.';return;}const esc=x=>x.replace(/([\\;,:])/g,'\\$1');const payload='WIFI:T:'+sec+';S:'+esc(ssid)+';P:'+esc(pass)+';H:'+hidden+';;';const qr=qrcode(0,'M');qr.addData(payload);qr.make();out.innerHTML='<strong>Local Wi-Fi QR preview</strong><div class="qr-svg">'+qr.createSvgTag({scalable:true})+'</div><pre>'+payload.replace(/</g,'&lt;')+'</pre><small>Generated in this browser. The payload is not sent to Router Portal or a third-party API.</small>';});}
+  const pingBtn=document.querySelector('#ping-button');
+  if(pingBtn) pingBtn.addEventListener('click',()=>{document.querySelector('#ping-result').textContent='Measurement is not run by this static preview. Use a controlled, rate-limited probe with a disclosed method; do not enter an unauthorised target.';});
+  const portBtn=document.querySelector('#port-check-button');
+  if(portBtn) portBtn.addEventListener('click',()=>{const host=document.querySelector('#port-host').value.trim(), port=Number(document.querySelector('#port-number').value), out=document.querySelector('#port-result');out.textContent=host && port>=1 && port<=65535?'A production probe must verify one authorised target with a disclosed vantage point. This static build does not claim an open/closed result.':'Enter one valid authorised host and a port from 1 to 65535.';});
 })();`;
 await writeFile(join(dist, 'assets/app.js'), appJs);
 await writeFile(join(dist, 'search-index.json'), JSON.stringify(searchIndex, null, 2));
