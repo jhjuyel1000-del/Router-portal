@@ -2,6 +2,7 @@ import { mkdir, rm, writeFile, copyFile, readFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { makeRecommendedPages } from './recommended-pages.mjs';
 import { makeFiftyPages } from './fifty-pages.mjs';
+import { makeModelPages } from './model-pages.mjs';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
@@ -164,6 +165,7 @@ const pages = [
   ,...brandPages
   ,...makeRecommendedPages(pageUrl)
   ,...makeFiftyPages(pageUrl)
+  ,...makeModelPages(pageUrl)
 ];
 
 function ipCard(label, text, href){ return `<div class="card"><span class="ip-chip">${label}</span><p>${text}</p><a href="${pageUrl(href)}">View the guide →</a></div>`; }
