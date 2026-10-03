@@ -2,6 +2,8 @@ import { mkdir, rm, writeFile, copyFile, readFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { makeRecommendedPages } from './recommended-pages.mjs';
 import { makeFiftyPages } from './fifty-pages.mjs';
+import { makeNewPages } from './new-pages.mjs';
+import { makeLegacyModelPages } from './legacy-model-pages.mjs';
 import { makeModelPages } from './model-pages.mjs';
 
 const root = process.cwd();
@@ -165,6 +167,8 @@ const pages = [
   ,...brandPages
   ,...makeRecommendedPages(pageUrl)
   ,...makeFiftyPages(pageUrl)
+  ,...makeLegacyModelPages(pageUrl)
+  ,...makeNewPages(pageUrl)
   ,...makeModelPages(pageUrl)
 ];
 
@@ -184,7 +188,7 @@ function layout(page){
   const canonicalTag = isNoindex ? '' : `<link rel="canonical" href="${canonical(page.slug)}">`;
   const robotsTag = `<meta name="robots" content="${isNoindex ? 'noindex,follow' : 'index,follow'}">`;
   const socialTags = isNoindex ? '' : `<meta property="og:site_name" content="Router Portal"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${canonical(page.slug)}"><meta property="og:type" content="website"><meta property="og:image" content="${canonical('/assets/logo.png')}"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${description}"><meta name="twitter:image" content="${canonical('/assets/logo.png')}">`;
-  const schema = isNoindex ? '' : (() => { const data = { '@context':'https://schema.org','@type':page.home?'WebSite':'WebPage',name:page.home?'Router Portal':title,url:canonical(page.slug),description }; if (page.home) data.publisher = { '@type':'Organization',name:'Router Portal',url:siteUrl,logo:{ '@type':'ImageObject',url:canonical('/assets/logo.png') } }; return `<script type="application/ld+json">${JSON.stringify(data)}</script>`; })();
+  const schema = isNoindex ? '' : (() => { const data = { '@context':'https://schema.org','@type':page.home?'WebSite':(page.schemaType || 'WebPage'),name:page.home?'Router Portal':title,url:canonical(page.slug),description }; if (page.home) data.publisher = { '@type':'Organization',name:'Router Portal',url:siteUrl,logo:{ '@type':'ImageObject',url:canonical('/assets/logo.png') } }; else data.breadcrumb = {'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:canonical('/')},{'@type':'ListItem',position:2,name:page.label,item:canonical(page.slug)}]}; return `<script type="application/ld+json">${JSON.stringify(data)}</script>`; })();
   return `<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}"><meta name="author" content="Router Portal Editorial Team"><meta name="keywords" content="${escapeHtml((page.searchTerms || '').split(',').slice(0,8).join(', '))}"><meta name="theme-color" content="#2f6fed"><meta name="google-site-verification" content="iah_huluCmfWfZhIDsoW2YW1HP9HJmICG1rkl1VXRqk">${robotsTag}${canonicalTag}<link rel="icon" href="${pageUrl('/assets/favicon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="${pageUrl('/assets/style.css')}">${socialTags}${schema}</head><body><a class="skip-link" href="#main">Skip to content</a>${header()}${hero}<div id="main">${main}</div>${footer()}<script src="${pageUrl('/assets/app.js')}" defer></script></body></html>`;
 }
 
@@ -205,6 +209,7 @@ const appJs = qrLibrary + `
     });
   }
   document.querySelectorAll('[data-copy-ip]').forEach(btn => btn.addEventListener('click', async () => { try { await navigator.clipboard.writeText(btn.dataset.copyIp); const old = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = old, 1200); } catch { btn.textContent = 'Copy manually'; } }));
+  document.querySelectorAll('[data-copy-guide]').forEach(btn => btn.addEventListener('click', async () => { try { await navigator.clipboard.writeText(location.href); const old = btn.textContent; btn.textContent = 'Link copied'; setTimeout(() => btn.textContent = old, 1400); } catch { btn.textContent = 'Copy from address bar'; } }));
     const form = document.querySelector('#site-search');
   const input = document.querySelector('#search-input');
   const results = document.querySelector('#search-results');
