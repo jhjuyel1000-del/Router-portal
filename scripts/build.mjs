@@ -4,6 +4,7 @@ import { makeRecommendedPages } from './recommended-pages.mjs';
 import { makeFiftyPages } from './fifty-pages.mjs';
 import { makeNewPages } from './new-pages.mjs';
 import { makeModelPages } from './model-pages.mjs';
+import { makeVersionTwoPages } from './version-two-pages.mjs';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
@@ -159,9 +160,12 @@ const pages = [
 	  ,...makeFiftyPages(pageUrl)
 	  ,...makeNewPages(pageUrl)
   ,...makeModelPages(pageUrl)
+  ,...makeVersionTwoPages(pageUrl)
 ];
 const allGuideLinks = pages.map(p => `<li><a href="${pageUrl(p.slug)}">${p.h1}</a><span>${p.label}</span></li>`).join('');
 pages.push({ slug:'/all-guides/', title:'All Router Guides and Tools | Router Portal', description:'Browse every Router Portal guide, tool, router IP page, brand page, model page, Wi-Fi guide, and security resource in one directory.', label:'All Router Portal guides', h1:'Browse all router guides and tools', intro:'Use the directory or search to reach every Router Portal page, tool, and topic cluster.', searchTerms:'all router guides, router tools directory, router IP guides, Wi-Fi guides, network security guides', body:`<div class="answer-lead"><strong>Find any page:</strong> Browse the complete Router Portal directory below, or use the site search to find a router IP, model, tool, Wi-Fi topic, or troubleshooting guide.</div><div class="guide-directory"><ul>${allGuideLinks}</ul></div><div class="notice"><strong>Safety reminder:</strong> Use router instructions only for a device and network you own or are authorised to manage. Never send Router Portal a router password or Wi-Fi key.</div>`});
+const duplicateSlugs = pages.map(p => p.slug).filter((slug, i, all) => all.indexOf(slug) !== i);
+if (duplicateSlugs.length) throw new Error(`Duplicate page slugs: ${[...new Set(duplicateSlugs)].join(', ')}`);
 function ipCard(label, text, href){ return `<div class="card"><span class="ip-chip">${label}</span><p>${text}</p><a href="${pageUrl(href)}">View the guide →</a></div>`; }
 function escapeHtml(value){ return value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function seoTitle(value){ const base=String(value).replace(/\s+/g,' ').trim().replace(/\s*\|\s*Router Portal$/i,'').trim(); if(base.length<=60) return base; return `${base.slice(0,60).replace(/\s+\S*$/,'').trim()}`; }
@@ -230,6 +234,11 @@ const appJs = qrLibrary + `
   if(pingBtn) pingBtn.addEventListener('click',()=>{document.querySelector('#ping-result').textContent='Measurement is not run by this static preview. Use a controlled, rate-limited probe with a disclosed method; do not enter an unauthorised target.';});
   const portBtn=document.querySelector('#port-check-button');
   if(portBtn) portBtn.addEventListener('click',()=>{const host=document.querySelector('#port-host').value.trim(), port=Number(document.querySelector('#port-number').value), out=document.querySelector('#port-result');out.textContent=host && port>=1 && port<=65535?'A production probe must verify one authorised target with a disclosed vantage point. This static build does not claim an open/closed result.':'Enter one valid authorised host and a port from 1 to 65535.';});
+  const addressBtn=document.querySelector('#v2-address-button');
+  if(addressBtn) addressBtn.addEventListener('click',()=>{const raw=document.querySelector('#v2-address-input').value.trim(),out=document.querySelector('#v2-address-result'),m=raw.match(/^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)$/);if(!m){out.textContent='সঠিক IPv4 লিখুন, যেমন 192.168.1.1।';return;}const a=m.slice(1).map(Number),valid=a.every(n=>n>=0&&n<=255),private=(a[0]===10)||(a[0]===172&&a[1]>=16&&a[1]<=31)||(a[0]===192&&a[1]===168);if(!valid){out.textContent='প্রতিটি অংশ 0 থেকে 255-এর মধ্যে হতে হবে।';return;}out.innerHTML='<strong>'+raw+' বৈধ IPv4 address।</strong><br>'+ (private?'এটি private range-এর মধ্যে পড়ে।':'এটি private home-router range নয়।')+'<br><small>এটি আপনার gateway বা admin address প্রমাণ করে না; connected device-এর gateway যাচাই করুন।</small>';});
+  document.querySelectorAll('[data-v2-decision]').forEach(btn=>btn.addEventListener('click',()=>{const out=document.querySelector('#v2-decision-result'),messages={slow:'প্রথমে gateway, cable, Wi‑Fi ও power-cycle পরীক্ষা করুন। Factory reset এখনই দরকার নেই।',password:'Model-specific recovery, label ও setup record দেখুন। Credential অনুমান করবেন না; reset শেষ বিকল্প।',config:'Backup থাকলে প্রস্তুত রাখুন। Exact model instructions দেখে শেষ বিকল্প হিসেবে factory reset বিবেচনা করুন।'};out.innerHTML='<strong>পরবর্তী নিরাপদ ধাপ:</strong> '+messages[btn.dataset.v2Decision];}));
+  const v2Checks=[...document.querySelectorAll('[data-v2-check]')];
+  if(v2Checks.length){const out=document.querySelector('#v2-check-result'),refresh=()=>{const done=v2Checks.filter(x=>x.checked).length; if(out) out.textContent=done+' / '+v2Checks.length+'টি item সম্পন্ন। পরিবর্তন করার আগে model ও ISP নির্দেশনা যাচাই করুন।';};v2Checks.forEach(x=>x.addEventListener('change',refresh));refresh();}
 })();`;
 await writeFile(join(dist, 'assets/app-v2.js'), appJs);
 await writeFile(join(dist, 'search-index.json'), JSON.stringify(searchIndex, null, 2));
