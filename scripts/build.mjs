@@ -6,6 +6,7 @@ import { makeNewPages } from './new-pages.mjs';
 import { makeModelPages } from './model-pages.mjs';
 import { makeVersionTwoPages } from './version-two-pages.mjs';
 import { makeAdditionalIpPages } from './additional-ip-pages.mjs';
+import { makeIpPages50 } from './ip-pages-50.mjs';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
@@ -161,8 +162,9 @@ const pages = [
 	  ,...makeFiftyPages(pageUrl)
 	  ,...makeNewPages(pageUrl)
   ,...makeModelPages(pageUrl)
-  ,...makeVersionTwoPages(pageUrl)
-  ,...makeAdditionalIpPages(pageUrl)
+	  ,...makeVersionTwoPages(pageUrl)
+	  ,...makeAdditionalIpPages(pageUrl)
+	  ,...makeIpPages50(pageUrl)
 ];
 const allGuideLinks = pages.map(p => `<li><a href="${pageUrl(p.slug)}">${p.h1}</a><span>${p.label}</span></li>`).join('');
 pages.push({ slug:'/all-guides/', title:'All Router Guides and Tools | Router Portal', description:'Browse every Router Portal guide, tool, router IP page, brand page, model page, Wi-Fi guide, and security resource in one directory.', label:'All Router Portal guides', h1:'Browse all router guides and tools', intro:'Use the directory or search to reach every Router Portal page, tool, and topic cluster.', searchTerms:'all router guides, router tools directory, router IP guides, Wi-Fi guides, network security guides', body:`<div class="answer-lead"><strong>Find any page:</strong> Browse the complete Router Portal directory below, or use the site search to find a router IP, model, tool, Wi-Fi topic, or troubleshooting guide.</div><div class="guide-directory"><ul>${allGuideLinks}</ul></div><div class="notice"><strong>Safety reminder:</strong> Use router instructions only for a device and network you own or are authorised to manage. Never send Router Portal a router password or Wi-Fi key.</div>`});
@@ -170,7 +172,7 @@ const duplicateSlugs = pages.map(p => p.slug).filter((slug, i, all) => all.index
 if (duplicateSlugs.length) throw new Error(`Duplicate page slugs: ${[...new Set(duplicateSlugs)].join(', ')}`);
 function ipCard(label, text, href){ return `<div class="card"><span class="ip-chip">${label}</span><p>${text}</p><a href="${pageUrl(href)}">View the guide →</a></div>`; }
 function escapeHtml(value){ return value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function seoTitle(value){ const base=String(value).replace(/\s+/g,' ').trim().replace(/\s*\|\s*Router Portal$/i,'').trim(); if(base.length<=60) return base; return `${base.slice(0,60).replace(/\s+\S*$/,'').trim()}`; }
+	function seoTitle(value){ const base=String(value).replace(/\s+/g,' ').trim().replace(/\s*\|\s*Router Portal$/i,'').trim(); if(base.length<30) return `${base} | Router Portal`; if(base.length<=60) return base; return `${base.slice(0,60).replace(/\s+\S*$/,'').trim()}`; }
 function seoDescription(value){ let text=String(value).replace(/\s+/g,' ').trim(); if(text.length<50) text=`${text} Safe steps, limits and source notes included.`; if(text.length<=160) return text; return `${text.slice(0,158).replace(/\s+\S*$/,'').trim()}…`; }
 function header(){
   const desktopItems = `<a href="${pageUrl('/router-login/')}">Router Help</a><a href="${pageUrl('/router-login-not-working/')}">Problem Solver</a><a href="${pageUrl('/all-guides/')}">Guides</a><a href="${pageUrl('/brand-router-model-search/')}">Brands</a><a href="${pageUrl('/about/')}">About</a>`;
