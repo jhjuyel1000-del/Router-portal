@@ -2,7 +2,7 @@
 
 ## চূড়ান্ত ফল
 
-Version 2-এর জন্য আগের content overlap না করে **১১টি নতুন page** তৈরি করা হয়েছে। আগের ১০৬টি page-সহ site-এ এখন মোট **১১৭টি page** আছে। নতুন page-গুলো static HTML হিসেবে তৈরি হয়েছে, তাই crawler JavaScript চালানো ছাড়াই মূল content, title, description, H1 ও canonical দেখতে পারে।
+Version 2-এর জন্য আগের content overlap না করে **১১টি নতুন page** তৈরি করা হয়েছে। Remote branch-এর সাম্প্রতিক design এবং all-guides directory update-সহ final build-এ এখন মোট **১৬৮টি page** আছে। নতুন page-গুলো static HTML হিসেবে তৈরি হয়েছে, তাই crawler JavaScript চালানো ছাড়াই মূল content, title, description, H1 ও canonical দেখতে পারে।
 
 ## নতুন page-এর সম্পূর্ণ তালিকা
 
@@ -40,7 +40,7 @@ Sitemap ও crawler files build script থেকেই তৈরি হয়ে
 - TXT sitemap: https://routerportals.xyz/sitemap.txt
 - Robots: https://routerportals.xyz/robots.txt
 
-বর্তমান তিনটি সংখ্যাই **১১৭**: generated page ১১৭, XML URL ১১৭, TXT URL ১১৭। Duplicate sitemap URL পাওয়া যায়নি। Robots file দুটো sitemap-ই নির্দেশ করছে।
+Final build-এর তিনটি সংখ্যা একই: generated page **১৬৮**, XML URL **১৬৮**, TXT URL **১৬৮**। Duplicate sitemap URL পাওয়া যায়নি। Robots file দুটো sitemap-ই নির্দেশ করছে।
 
 ## Validation
 
