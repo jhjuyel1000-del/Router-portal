@@ -1,13 +1,13 @@
-const safe = `<div class="notice"><strong>নিরাপত্তা:</strong> এই guide শুধু নিজের বা অনুমোদিত router-এর জন্য ব্যবহার করুন। Router Portal-এ কোনো admin password, Wi‑Fi password, serial, MAC বা private network screenshot পাঠাবেন না।</div>`;
+const safe = `<div class="notice"><strong>Security:</strong> Use this guide only for your own or authorized routers. Do not send any admin password, Wi‑Fi password, serial, MAC or private network screenshot to Router Portal.</div>`;
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 const models = [
-  {brand:'TP-Link', model:'Archer C6', slug:'tp-link/archer-c6', addresses:'192.168.0.1, 192.168.1.1 বা model/firmware অনুযায়ী local hostname', brandPath:'/brand/tp-link/', ip:'/ip/192-168-0-1/', terms:'TP-Link Archer C6 login, Archer C6 router admin, Archer C6 IP, Archer C6 Wi-Fi password'},
-  {brand:'NETGEAR', model:'R7000', slug:'netgear/r7000', addresses:'192.168.1.1, 192.168.0.1 বা model documentation-এ দেওয়া local hostname', brandPath:'/brand/netgear/', ip:'/ip/192-168-1-1/', terms:'NETGEAR R7000 login, R7000 router admin, R7000 IP, Nighthawk R7000 setup'},
-  {brand:'D-Link', model:'DIR-615', slug:'d-link/dir-615', addresses:'192.168.0.1 বা hardware revision/firmware অনুযায়ী আলাদা local address', brandPath:'/brand/d-link/', ip:'/ip/192-168-0-1/', terms:'D-Link DIR-615 login, DIR-615 admin, DIR-615 IP, DIR-615 Wi-Fi password'},
-  {brand:'Tenda', model:'AC10', slug:'tenda/ac10', addresses:'192.168.0.1 বা model/firmware অনুযায়ী local setup address', brandPath:'/brand/tenda/', ip:'/ip/192-168-0-1/', terms:'Tenda AC10 login, AC10 router admin, AC10 IP, Tenda AC10 setup'},
-  {brand:'Huawei', model:'B535', slug:'huawei/b535', addresses:'192.168.8.1 বা exact firmware/ISP configuration অনুযায়ী address', brandPath:'/brand/huawei/', ip:'/ip/192-168-8-1/', terms:'Huawei B535 login, B535 admin, Huawei B535 IP, B535 4G router setup'},
-  {brand:'ASUS', model:'RT-AC68U', slug:'asus/rt-ac68u', addresses:'192.168.1.1 বা model documentation-এ দেওয়া local hostname', brandPath:'/brand/asus/', ip:'/ip/192-168-1-1/', terms:'ASUS RT-AC68U login, RT-AC68U admin, RT-AC68U IP, ASUS Wi-Fi setup'}
+  {brand:'TP-Link', model:'Archer C6', slug:'tp-link/archer-c6', addresses:'192.168.0.1, 192.168.1.1 or local hostname according to model/firmware', brandPath:'/brand/tp-link/', ip:'/ip/192-168-0-1/', terms:'TP-Link Archer C6 login, Archer C6 router admin, Archer C6 IP, Archer C6 Wi-Fi password'},
+  {brand:'NETGEAR', model:'R7000', slug:'netgear/r7000', addresses:'192.168.1.1, 192.168.0.1 or the local hostname given in the model documentation', brandPath:'/brand/netgear/', ip:'/ip/192-168-1-1/', terms:'NETGEAR R7000 login, R7000 router admin, R7000 IP, Nighthawk R7000 setup'},
+  {brand:'D-Link', model:'DIR-615', slug:'d-link/dir-615', addresses:'192.168.0.1 or different local address according to hardware revision/firmware', brandPath:'/brand/d-link/', ip:'/ip/192-168-0-1/', terms:'D-Link DIR-615 login, DIR-615 admin, DIR-615 IP, DIR-615 Wi-Fi password'},
+  {brand:'Tenda', model:'AC10', slug:'tenda/ac10', addresses:'192.168.0.1 or local setup address according to model/firmware', brandPath:'/brand/tenda/', ip:'/ip/192-168-0-1/', terms:'Tenda AC10 login, AC10 router admin, AC10 IP, Tenda AC10 setup'},
+  {brand:'Huawei', model:'B535', slug:'huawei/b535', addresses:'192.168.8.1 or address as per exact firmware/ISP configuration', brandPath:'/brand/huawei/', ip:'/ip/192-168-8-1/', terms:'Huawei B535 login, B535 admin, Huawei B535 IP, B535 4G router setup'},
+  {brand:'ASUS', model:'RT-AC68U', slug:'asus/rt-ac68u', addresses:'192.168.1.1 or the local hostname given in the model documentation', brandPath:'/brand/asus/', ip:'/ip/192-168-1-1/', terms:'ASUS RT-AC68U login, RT-AC68U admin, RT-AC68U IP, ASUS Wi-Fi setup'}
 ];
 
 export function makeModelPages(pageUrl){

@@ -202,107 +202,107 @@
     },
     {
       "path": "/gateway/find-router-ip-windows-11/",
-      "title": "Windows 11-এ router IP খোঁজা"
+      "title": "Find router IP in Windows 11"
     },
     {
       "path": "/gateway/find-router-ip-macos/",
-      "title": "macOS-এ router IP খোঁজা"
+      "title": "Find router IP on macOS"
     },
     {
       "path": "/gateway/find-router-ip-android/",
-      "title": "Android-এ default gateway খোঁজা"
+      "title": "Finding default gateway in Android"
     },
     {
       "path": "/gateway/find-router-ip-iphone-ipad/",
-      "title": "iPhone/iPad-এ router address খোঁজা"
+      "title": "Find router address on iPhone/iPad"
     },
     {
       "path": "/gateway/find-router-ip-linux/",
-      "title": "Linux-এ default gateway খোঁজা"
+      "title": "Finding the default gateway in Linux"
     },
     {
       "path": "/gateway/192-168-vs-10-private-ip/",
-      "title": "192.168.x.x বনাম 10.x.x.x private IP"
+      "title": "192.168.x.x vs 10.x.x.x private IP"
     },
     {
       "path": "/gateway/router-login-by-hostname/",
-      "title": "Router hostname দিয়ে login"
+      "title": "Login with router hostname"
     },
     {
       "path": "/gateway/ipv6-router-login/",
-      "title": "IPv6 দিয়ে router admin page খোলা"
+      "title": "Opening the router admin page with IPv6"
     },
     {
       "path": "/models/how-to-identify-router-model/",
-      "title": "Router model ও hardware revision শনাক্ত করা"
+      "title": "Identify router model and hardware revision"
     },
     {
       "path": "/models/hardware-revision/",
-      "title": "Hardware revision কেন login নির্দেশনা বদলায়"
+      "title": "Hardware revision why login instructions change"
     },
     {
       "path": "/models/router-login-evidence-card/",
-      "title": "Verified router evidence card কীভাবে পড়বেন"
+      "title": "How to read Verified router evidence card"
     },
     {
       "path": "/isp/router-login-by-isp/",
-      "title": "ISP অনুযায়ী router login প্রস্তুতি"
+      "title": "Router login preparation according to ISP"
     },
     {
       "path": "/isp/isp-router-admin-access/",
-      "title": "ISP router বনাম নিজের router admin access"
+      "title": "ISP router vs own router admin access"
     },
     {
       "path": "/models/firmware-isp-variants/",
-      "title": "Firmware ও ISP variant login differences"
+      "title": "Firmware and ISP variant login differences"
     },
     {
       "path": "/models/router-manuals-and-support/",
-      "title": "Router manual ও official support খোঁজা"
+      "title": "Looking for router manual and official support"
     },
     {
       "path": "/brand-router-model-search/",
-      "title": "Brand/model search ও verified index"
+      "title": "Brand/model search and verified index"
     },
     {
       "path": "/security/after-router-login-checklist/",
-      "title": "Login করার পর router security checklist"
+      "title": "Router security checklist after login"
     },
     {
       "path": "/security/router-admin-account-types/",
-      "title": "Router admin account ও credential states"
+      "title": "Router admin account and credential states"
     },
     {
       "path": "/security/firmware-update-safety/",
-      "title": "Router firmware update নিরাপদে করা"
+      "title": "Router firmware update done safely"
     },
     {
       "path": "/security/firmware-end-of-life/",
-      "title": "Router firmware end-of-life ও replacement"
+      "title": "Router firmware end-of-life and replacement"
     },
     {
       "path": "/security/remote-management-risk/",
-      "title": "Remote router administration-এর ঝুঁকি"
+      "title": "Risks of remote router administration"
     },
     {
       "path": "/security/upnp-explained/",
-      "title": "UPnP কী এবং নিরাপদে review করা"
+      "title": "UPnP key and review safely"
     },
     {
       "path": "/security/wps-security/",
-      "title": "WPS security ও বন্ধ করার সিদ্ধান্ত"
+      "title": "WPS security and the decision to turn it off"
     },
     {
       "path": "/security/guest-network-vs-iot-network/",
-      "title": "Guest network বনাম IoT network"
+      "title": "Guest network vs IoT network"
     },
     {
       "path": "/security/router-firewall-basics/",
-      "title": "Router firewall basics ও verification"
+      "title": "Router firewall basics and verification"
     },
     {
       "path": "/security/hacked-router-triage/",
-      "title": "Router compromise সন্দেহ হলে triage"
+      "title": "Triage if router compromise is suspected"
     },
     {
       "path": "/wifi/slow-wifi-diagnosis/",
@@ -310,71 +310,71 @@
     },
     {
       "path": "/wifi/frequent-disconnects/",
-      "title": "Wi-Fi বারবার disconnect হলে কী পরীক্ষা করবেন"
+      "title": "What to check if Wi-Fi keeps disconnecting?"
     },
     {
       "path": "/wifi/channel-interference/",
-      "title": "Wi-Fi channel ও interference নির্বাচন"
+      "title": "Wi-Fi channel and interference selection"
     },
     {
       "path": "/wifi/2-4ghz-vs-5ghz-vs-6ghz/",
-      "title": "2.4GHz বনাম 5GHz বনাম 6GHz"
+      "title": "2.4GHz vs 5GHz vs 6GHz"
     },
     {
       "path": "/wifi/wpa2-vs-wpa3/",
-      "title": "WPA2 বনাম WPA3: কোন Wi-Fi security"
+      "title": "WPA2 vs. WPA3: No Wi-Fi security"
     },
     {
       "path": "/wifi/ssid-change-checklist/",
-      "title": "SSID বদলানোর আগে ও পরে checklist"
+      "title": "Checklist before and after changing SSID"
     },
     {
       "path": "/wifi/wifi-password-sharing-safely/",
-      "title": "Wi-Fi password/QR নিরাপদে share করা"
+      "title": "Share Wi-Fi password/QR securely"
     },
     {
       "path": "/wifi/bufferbloat-and-latency/",
-      "title": "Bufferbloat ও gaming latency"
+      "title": "Bufferbloat and gaming latency"
     },
     {
       "path": "/network/dhcp-reservation-vs-static-ip/",
-      "title": "DHCP reservation বনাম static IP"
+      "title": "DHCP reservation vs static IP"
     },
     {
       "path": "/network/dns-settings-router/",
-      "title": "Router DNS settings: choice ও troubleshooting"
+      "title": "Router DNS settings: choice and troubleshooting"
     },
     {
       "path": "/network/bridge-mode-vs-ap-mode/",
-      "title": "Bridge mode বনাম access point mode"
+      "title": "Bridge mode vs access point mode"
     },
     {
       "path": "/network/repeater-vs-access-point/",
-      "title": "Repeater, mesh ও access point-এর পার্থক্য"
+      "title": "Difference between repeater, mesh and access point"
     },
     {
       "path": "/network/double-nat-diagnosis/",
-      "title": "Double NAT শনাক্ত ও ঠিক করা"
+      "title": "Detecting and fixing Double NAT"
     },
     {
       "path": "/network/cgnat-explained/",
-      "title": "CGNAT কী এবং port forwarding কেন ব্যর্থ"
+      "title": "What is CGNAT and why does port forwarding fail?"
     },
     {
       "path": "/network/ipv6-home-router-basics/",
-      "title": "Home router-এ IPv6 basics"
+      "title": "IPv6 basics on home routers"
     },
     {
       "path": "/network/mtu-mss-home-network/",
-      "title": "MTU ও MSS: home-network troubleshooting"
+      "title": "MTU and MSS: home-network troubleshooting"
     },
     {
       "path": "/network/port-forwarding-vs-port-triggering/",
-      "title": "Port forwarding বনাম port triggering"
+      "title": "Port forwarding vs. port triggering"
     },
     {
       "path": "/network/dmz-vs-port-forwarding/",
-      "title": "DMZ host বনাম নির্দিষ্ট port forwarding"
+      "title": "DMZ host vs. specific port forwarding"
     },
     {
       "path": "/tools/gateway-self-check/",
@@ -382,7 +382,7 @@
     },
     {
       "path": "/tools/local-vs-public-ip-check/",
-      "title": "Local IP বনাম public IP comparison tool"
+      "title": "Local IP vs public IP comparison tool"
     },
     {
       "path": "/tools/dns-leak-router-check/",
@@ -394,11 +394,11 @@
     },
     {
       "path": "/reviews/router-for-apartment/",
-      "title": "ছোট apartment-এর জন্য router নির্বাচন"
+      "title": "Choosing a router for a small apartment"
     },
     {
       "path": "/reviews/router-for-home-server/",
-      "title": "Home server/NAS-এর জন্য router নির্বাচন"
+      "title": "Router selection for home server/NAS"
     },
     {
       "path": "/troubleshooting/router-led-lights/",
