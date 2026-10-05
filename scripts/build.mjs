@@ -9,6 +9,7 @@ import { makeAdditionalIpPages } from './additional-ip-pages.mjs';
 import { makeIpPages50 } from './ip-pages-50.mjs';
 import { makeIpPages100 } from './ip-pages-100.mjs';
 import { makeIpPages200 } from './ip-pages-200.mjs';
+import { makePilotPages } from './pilot-pages.mjs';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
@@ -169,6 +170,7 @@ const pages = [
 	  ,...makeIpPages50(pageUrl)
 	  ,...makeIpPages100(pageUrl)
 	  ,...makeIpPages200(pageUrl)
+  ,...makePilotPages(pageUrl)
 ];
 const allGuideLinks = pages.map(p => `<li><a href="${pageUrl(p.slug)}">${p.h1}</a><span>${p.label}</span></li>`).join('');
 pages.push({ slug:'/all-guides/', title:'All Router Guides and Tools | Router Portal', description:'Browse every Router Portal guide, tool, router IP page, brand page, model page, Wi-Fi guide, and security resource in one directory.', label:'All Router Portal guides', h1:'Browse all router guides and tools', intro:'Use the directory or search to reach every Router Portal page, tool, and topic cluster.', searchTerms:'all router guides, router tools directory, router IP guides, Wi-Fi guides, network security guides', body:`<div class="answer-lead"><strong>Find any page:</strong> Browse the complete Router Portal directory below, or use the site search to find a router IP, model, tool, Wi-Fi topic, or troubleshooting guide.</div><div class="guide-directory"><ul>${allGuideLinks}</ul></div><div class="notice"><strong>Safety reminder:</strong> Use router instructions only for a device and network you own or are authorised to manage. Never send Router Portal a router password or Wi-Fi key.</div>`});
