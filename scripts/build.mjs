@@ -182,42 +182,56 @@ const qualityAdditions = {
   '/factory-reset-router/': `<h2>Restart, recovery, or reset?</h2><div class="responsive-table"><table><thead><tr><th>Action</th><th>What it changes</th><th>When it fits</th></tr></thead><tbody><tr><td>Restart</td><td>Temporarily power-cycles the device</td><td>Slow or stuck service with known settings</td></tr><tr><td>Gateway check</td><td>Changes nothing</td><td>Login address is unknown or does not open</td></tr><tr><td>Official recovery</td><td>Depends on model</td><td>Admin credential is lost and recovery exists</td></tr><tr><td>Factory reset</td><td>Erases configuration</td><td>Last resort with ISP/setup information ready</td></tr></tbody></table></div><p>After a reset, verify the WAN connection, create separate admin and Wi-Fi credentials, update firmware from the exact manufacturer source, and review remote management before reconnecting household devices.</p>`,
   '/ip/192-168-1-1/': `<h2>Check whether this is actually your gateway</h2><p>192.168.1.1 is common but not universal. On Windows, read Default Gateway from <code>ipconfig</code>; on a phone, open the connected Wi-Fi details and read Gateway or Router. If the value differs, use that value instead of forcing 192.168.1.1.</p><h2>What a successful test tells you</h2><p>A login screen proves that a local device answered at the address; it does not prove the brand, password, Internet service, or that the device is yours. Confirm the router label and network ownership before changing anything.</p>`
 };
-for (const page of pages) if (qualityAdditions[page.slug]) page.body += qualityAdditions[page.slug];
+function guideDiagram(src, alt, caption, width, height){ return `<figure class="guide-diagram"><img src="${pageUrl(src)}" alt="${escapeHtml(alt)}" width="${width}" height="${height}" loading="lazy" decoding="async"><figcaption>${escapeHtml(caption)}</figcaption></figure>`; }
+const guideDiagrams = {
+  '/find-router-ip/': guideDiagram('/assets/find-your-gateway.svg','Three steps to find and open the actual router gateway','Find the current gateway instead of guessing a common router IP.',1200,640),
+  '/router-login/': guideDiagram('/assets/router-login-flow.svg','Safe router login sequence: connect, find IP, open the local page, verify credentials, then troubleshoot','Use the current gateway and model-specific credentials; avoid password guessing and premature resets.',1200,600),
+  '/factory-reset-router/': guideDiagram('/assets/restart-vs-factory-reset.svg','Comparison of router restart and factory reset, including settings that may be erased','Restart first when appropriate; treat factory reset as a last resort after checking the exact model and ISP setup.',1200,600)
+};
+for (const page of pages) {
+  if (qualityAdditions[page.slug]) page.body += qualityAdditions[page.slug];
+  if (guideDiagrams[page.slug]) {
+    const inserted = page.body.replace(/<div class="answer-lead">[\s\S]*?<\/div>/, match => `${match}${guideDiagrams[page.slug]}`);
+    page.body = inserted === page.body ? `${page.body}${guideDiagrams[page.slug]}` : inserted;
+  }
+}
 const allGuideLinks = pages.map(p => `<li><a href="${pageUrl(p.slug)}">${p.h1}</a><span>${p.label}</span></li>`).join('');
-pages.push({ slug:'/all-guides/', title:'All Router Guides and Tools | Router Portal', description:'Browse every Router Portal guide, tool, router IP page, brand page, model page, Wi-Fi guide, and security resource in one directory.', label:'All Router Portal guides', h1:'Browse all router guides and tools', intro:'Use the directory or search to reach every Router Portal page, tool, and topic cluster.', searchTerms:'all router guides, router tools directory, router IP guides, Wi-Fi guides, network security guides', body:`<div class="answer-lead"><strong>Find any page:</strong> Browse the complete Router Portal directory below, or use the site search to find a router IP, model, tool, Wi-Fi topic, or troubleshooting guide.</div><div class="guide-directory"><ul>${allGuideLinks}</ul></div><div class="notice"><strong>Safety reminder:</strong> Use router instructions only for a device and network you own or are authorised to manage. Never send Router Portal a router password or Wi-Fi key.</div>`});
+pages.push({ slug:'/all-guides/', title:'Router Guides: Login, Wi-Fi, IP & Troubleshooting | Router Portal', description:'Find step-by-step router login, gateway IP, Wi-Fi, setup, brand and security guides. Search by address or problem, then confirm your exact model before changing settings.', label:'All Router Portal guides', h1:'Router login, Wi-Fi, IP and troubleshooting guides', intro:'Browse practical guides by address, brand, setup task or common Wi-Fi problem.', searchTerms:'all router guides, router tools directory, router IP guides, Wi-Fi guides, network security guides', body:`<div class="answer-lead"><strong>Find any page:</strong> Browse the complete Router Portal directory below, or use the site search to find a router IP, model, tool, Wi-Fi topic, or troubleshooting guide.</div><div class="guide-directory"><ul>${allGuideLinks}</ul></div><div class="notice"><strong>Safety reminder:</strong> Use router instructions only for a device and network you own or are authorised to manage. Never send Router Portal a router password or Wi-Fi key.</div>`});
 const duplicateSlugs = pages.map(p => p.slug).filter((slug, i, all) => all.indexOf(slug) !== i);
 if (duplicateSlugs.length) throw new Error(`Duplicate page slugs: ${[...new Set(duplicateSlugs)].join(', ')}`);
+const indexablePages = pages.filter(page => page.noindex !== true && page.indexEligible !== false && !page.redirectTo);
 function ipCard(label, text, href){ return `<div class="card"><span class="ip-chip">${label}</span><p>${text}</p><a href="${pageUrl(href)}">View the guide →</a></div>`; }
-function escapeHtml(value){ return value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeHtml(value){ return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function serializeJsonLd(value){ return JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026'); }
 	function seoTitle(value){ const base=String(value).replace(/\s+/g,' ').trim().replace(/\s*\|\s*Router Portal$/i,'').trim(); if(base.length<30) return `${base} | Router Portal`; if(base.length<=60) return base; return `${base.slice(0,60).replace(/\s+\S*$/,'').trim()}`; }
 function seoDescription(value){ let text=String(value).replace(/\s+/g,' ').trim(); if(text.length<50) text=`${text} Safe steps, limits and source notes included.`; if(text.length<=160) return text; return `${text.slice(0,158).replace(/\s+\S*$/,'').trim()}…`; }
 function header(){
   const desktopItems = `<a href="${pageUrl('/router-login/')}">Router Help</a><a href="${pageUrl('/router-login-not-working/')}">Problem Solver</a><a href="${pageUrl('/all-guides/')}">Guides</a><a href="${pageUrl('/brand-router-model-search/')}">Brands</a><a href="${pageUrl('/about/')}">About</a>`;
   const mobileItems = `<a href="${pageUrl('/')}">Home</a><a href="${pageUrl('/router-login/')}">Router Help</a><a href="${pageUrl('/router-login-not-working/')}">Problem Solver</a><a href="${pageUrl('/all-guides/')}">Guides</a><a href="${pageUrl('/brand-router-model-search/')}">Brands</a><a href="${pageUrl('/about/')}">About</a>`;
-  return `<div class="portal-topbar">Router Portal · Practical help for your router, Wi-Fi and local network</div><header class="site-header"><nav class="nav" aria-label="Primary navigation"><a class="site-brand" href="${pageUrl('/')}" aria-label="Router Portal home"><img src="${pageUrl('/assets/logo-wifi.png')}" alt="Router Portal Wi-Fi logo" width="48" height="48"><span class="brand-name">Router <em>Portal</em></span></a><div class="portal-desktop-nav">${desktopItems}</div><div class="portal-search-label">⌕&nbsp; Search portal</div><details class="mobile-menu"><summary>Menu</summary><div class="mobile-menu-panel">${mobileItems}</div></details></nav></header>`;
+  return `<div class="portal-topbar">Router Portal · Practical help for your router, Wi-Fi and local network</div><header class="site-header"><nav class="nav" aria-label="Primary navigation"><a class="site-brand" href="${pageUrl('/')}" aria-label="Router Portal home"><img src="${pageUrl('/assets/logo-wifi.png')}" alt="Router Portal Wi-Fi logo" width="48" height="48"><span class="brand-name">Router <em>Portal</em></span></a><div class="portal-desktop-nav">${desktopItems}</div><div class="portal-global-search">${searchBox('header')}</div><details class="mobile-menu"><summary>Menu</summary><div class="mobile-menu-panel">${mobileItems}</div></details></nav></header>`;
 }
 function bottomNav(){ return `<nav class="bottom-nav" aria-label="Mobile portal navigation"><a class="active" href="${pageUrl('/')}"><span>⌂</span>Home</a><a href="${pageUrl('/router-login/')}"><span>◉</span>Help</a><a href="${pageUrl('/router-login-not-working/')}"><span>⌁</span>Diagnose</a><a href="${pageUrl('/brand-router-model-search/')}"><span>▦</span>Brands</a></nav>`; }
 function footer(){ return `<footer class="site-footer"><div class="footer-inner"><div><a class="site-brand" href="${pageUrl('/')}" aria-label="Router Portal home"><img src="${pageUrl('/assets/logo-wifi.png')}" alt="Router Portal Wi-Fi logo" width="48" height="48"><span class="brand-name">Router Portal</span></a><p>Simple, safety-first help for router IP addresses, admin access, and home-network problems.</p><a class="footer-directory" href="${pageUrl('/all-guides/')}">Explore the complete guide directory →</a></div><div><strong>Help</strong><p><a href="${pageUrl('/router-login/')}">Router login</a><br><a href="${pageUrl('/find-router-ip/')}">Find your router IP</a><br><a href="${pageUrl('/router-login-not-working/')}">Fix login problems</a><br><a href="${pageUrl('/ip/192-168-1-1/')}">192.168.1.1 guide</a></p></div><div><strong>Explore</strong><p><a href="${pageUrl('/brand-router-model-search/')}">Brands and models</a><br><a href="${pageUrl('/tools/what-is-my-ip/')}">Tools</a><br><a href="${pageUrl('/wifi/wi-fi-7-explained/')}">Wi-Fi guides</a><br><a href="${pageUrl('/security/router-firewall-basics/')}">Security guides</a></p></div><div><strong>Trust</strong><p><a href="${pageUrl('/about/')}">About</a> · <a href="${pageUrl('/contact/')}">Corrections</a><br><a href="${pageUrl('/editorial-policy/')}">Editorial policy</a><br><a href="${pageUrl('/privacy/')}">Privacy</a> · <a href="${pageUrl('/terms/')}">Terms</a></p></div></div></footer>`; }
-function searchBox(){ return `<div class="search-wrap"><form class="search-shell" id="site-search"><label class="sr-only" for="search-input">Search router help</label><input id="search-input" autocomplete="off" placeholder="Try 192.168.1.1 or router login problem"><button class="button" type="submit">Search</button></form><div id="search-results" class="search-results" aria-live="polite"></div></div>`; }
+function searchBox(id='home'){ const inputId=`${id}-search-input`, resultsId=`${id}-search-results`; return `<div class="search-wrap" data-search-widget><form class="search-shell" id="${id}-site-search" role="search" aria-label="Search Router Portal"><label class="sr-only" for="${inputId}">Search router guides</label><input id="${inputId}" data-search-input type="search" autocomplete="off" aria-controls="${resultsId}" aria-expanded="false" placeholder="Try 192.168.1.1 or router login"><button class="button" type="submit">Search</button></form><div id="${resultsId}" class="search-results" data-search-results role="region" aria-label="Search suggestions" aria-live="polite" hidden></div></div>`; }
 function layout(page){
   const title=seoTitle(page.title);
   const description=seoDescription(page.description);
-  const hero = page.home ? `<section class="hero demo-hero"><div class="container hero-grid"><div><div class="breadcrumb">Home / Router Portal</div><span class="eyebrow">ROUTER PORTAL · GUIDE MODE</span><h1>Enter the help portal for your network.</h1><p class="hero-lead">Tell Router Portal what is wrong. Start with a question, an IP address, a router brand, or a common Wi-Fi problem.</p>${searchBox()}<div class="entry-row"><a class="entry" href="${pageUrl('/router-login/')}">🔐 Router Login</a><a class="entry" href="${pageUrl('/router-login-not-working/')}">📶 Wi-Fi Issue</a><a class="entry" href="${pageUrl('/find-router-ip/')}">🌐 Find IP</a><a class="entry" href="${pageUrl('/router-login-not-working/')}">🛠️ Fix Connection</a></div></div><div class="portal-panel" aria-label="Network portal status"><div class="wave"></div><div class="status-line"><span class="online"><i></i> Portal ready</span><span>Help Center</span></div><div class="signal"><b></b><b></b><b></b><b></b></div><div class="portal-title">Your Router Help Zone</div><div class="portal-sub">A clear path from problem → diagnosis → solution</div><a class="enter" href="${pageUrl('/router-login-not-working/')}">Enter Problem Solver →</a></div></div></section>` : `<section class="page-hero"><div class="page-hero-inner"><div class="breadcrumbs"><a href="${pageUrl('/')}">Home</a> / Router help</div><span class="eyebrow">${page.label}</span><h1>${page.h1}</h1><p>${page.intro}</p></div></section>`;
+  const hero = page.home ? `<section class="hero demo-hero"><div class="container hero-grid"><div><div class="breadcrumb">Home / Router Portal</div><span class="eyebrow">ROUTER PORTAL · GUIDE MODE</span><h1>Enter the help portal for your network.</h1><p class="hero-lead">Tell Router Portal what is wrong. Start with a question, an IP address, a router brand, or a common Wi-Fi problem.</p>${searchBox('home')}<div class="entry-row"><a class="entry" href="${pageUrl('/router-login/')}">🔐 Router Login</a><a class="entry" href="${pageUrl('/router-login-not-working/')}">📶 Wi-Fi Issue</a><a class="entry" href="${pageUrl('/find-router-ip/')}">🌐 Find IP</a><a class="entry" href="${pageUrl('/router-login-not-working/')}">🛠️ Fix Connection</a></div></div><div class="portal-panel" aria-label="Network portal status"><div class="wave"></div><div class="status-line"><span class="online"><i></i> Portal ready</span><span>Help Center</span></div><div class="signal"><b></b><b></b><b></b><b></b></div><div class="portal-title">Your Router Help Zone</div><div class="portal-sub">A clear path from problem → diagnosis → solution</div><a class="enter" href="${pageUrl('/router-login-not-working/')}">Enter Problem Solver →</a></div></div></section>` : `<section class="page-hero"><div class="page-hero-inner"><div class="breadcrumbs"><a href="${pageUrl('/')}">Home</a> / Router help</div><span class="eyebrow">${page.label}</span><h1>${page.h1}</h1><p>${page.intro}</p></div></section>`;
   const utility = '';
   const main = page.home ? page.body : `<div class="article-shell"><article class="article"><aside class="toc"><b>ON THIS PAGE</b><a href="${pageUrl('/router-login/')}">Quick answer</a><a href="${pageUrl('/find-router-ip/')}">Find IP</a><a href="${pageUrl('/router-login-not-working/')}">Troubleshoot</a><a href="${pageUrl('/all-guides/')}">More guides</a></aside><div class="article-main"><div class="article-tags"><span class="tag">${page.label}</span><span class="tag">Router Portal guide</span></div>${page.body}</div></article></div>`;
   const isNoindex = page.noindex === true;
   const canonicalTag = isNoindex ? '' : `<link rel="canonical" href="${canonical(page.slug)}">`;
   const robotsTag = `<meta name="robots" content="${isNoindex ? 'noindex,follow' : 'index,follow'}">`;
-  const socialTags = isNoindex ? '' : `<meta property="og:site_name" content="Router Portal"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${canonical(page.slug)}"><meta property="og:type" content="website"><meta property="og:image" content="${canonical('/assets/logo-wifi.png')}"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${description}"><meta name="twitter:image" content="${canonical('/assets/logo-wifi.png')}">`;
-  const schema = isNoindex ? '' : (() => { const data = { '@context':'https://schema.org','@type':page.home?'WebSite':(page.schemaType || 'WebPage'),name:page.home?'Router Portal':title,url:canonical(page.slug),description }; if (page.home) data.publisher = { '@type':'Organization',name:'Router Portal',url:siteUrl,logo:{ '@type':'ImageObject',url:canonical('/assets/logo-wifi.png') } }; if (page.slug === '/about/') { data.mainEntity = { '@type':'Organization',name:'Router Portal',url:siteUrl,founder:{ '@type':'Person',name:'Md Juyel',jobTitle:'Founder and CEO',url:canonical('/about/') },foundingDate:'2026',areaServed:'Worldwide',logo:canonical('/assets/logo-wifi.png'),email:'routerportals@gmail.com',telephone:'+8801332369029',sameAs:['https://www.facebook.com/share/1G6Bz6U17h/'],contactPoint:{ '@type':'ContactPoint',contactType:'customer support',email:'routerportals@gmail.com',telephone:'+8801332369029',availableLanguage:['English'] } }; } if (!page.home) data.breadcrumb = {'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:canonical('/')},{'@type':'ListItem',position:2,name:page.label,item:canonical(page.slug)}]}; return `<script type="application/ld+json">${JSON.stringify(data)}</script>`; })();
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}"><meta name="author" content="Router Portal Editorial Team"><meta name="keywords" content="${escapeHtml((page.searchTerms || '').split(',').slice(0,8).join(', '))}"><meta name="theme-color" content="#2f6fed"><meta name="google-site-verification" content="iah_huluCmfWfZhIDsoW2YW1HP9HJmICG1rkl1VXRqk">${robotsTag}${canonicalTag}<link rel="icon" href="${pageUrl('/assets/favicon-wifi.png')}" type="image/png" sizes="64x64"><link rel="shortcut icon" href="${pageUrl('/assets/favicon-wifi.png')}" type="image/png"><link rel="apple-touch-icon" href="${pageUrl('/assets/favicon-wifi.png')}" sizes="64x64"><link rel="stylesheet" href="${pageUrl('/assets/style-v8.css')}">${socialTags}${schema}</head><body><a class="skip-link" href="#main">Skip to content</a>${header()}${hero}${utility}<div id="main">${main}</div>${bottomNav()}${footer()}<script src="${pageUrl('/assets/app-v2.js')}" defer></script></body></html>`;
+  const socialTags = isNoindex ? '' : `<meta property="og:site_name" content="Router Portal"><meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}"><meta property="og:url" content="${escapeHtml(canonical(page.slug))}"><meta property="og:type" content="website"><meta property="og:image" content="${canonical('/assets/logo-wifi.png')}"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(description)}"><meta name="twitter:image" content="${canonical('/assets/logo-wifi.png')}">`;
+  const schema = isNoindex ? '' : (() => { const data = { '@context':'https://schema.org','@type':page.home?'WebSite':(page.schemaType || 'WebPage'),name:page.home?'Router Portal':title,url:canonical(page.slug),description }; if (page.home) data.publisher = { '@type':'Organization',name:'Router Portal',url:siteUrl,logo:{ '@type':'ImageObject',url:canonical('/assets/logo-wifi.png') } }; if (page.slug === '/about/') { data.mainEntity = { '@type':'Organization',name:'Router Portal',url:siteUrl,founder:{ '@type':'Person',name:'Md Juyel',jobTitle:'Founder and CEO',url:canonical('/about/') },foundingDate:'2026',areaServed:'Worldwide',logo:canonical('/assets/logo-wifi.png'),email:'routerportals@gmail.com',telephone:'+8801332369029',sameAs:['https://www.facebook.com/share/1G6Bz6U17h/'],contactPoint:{ '@type':'ContactPoint',contactType:'customer support',email:'routerportals@gmail.com',telephone:'+8801332369029',availableLanguage:['English'] } }; } if (!page.home) data.breadcrumb = {'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:canonical('/')},{'@type':'ListItem',position:2,name:page.label,item:canonical(page.slug)}]}; return `<script type="application/ld+json">${serializeJsonLd(data)}</script>`; })();
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}"><meta name="author" content="Router Portal Editorial Team"><meta name="keywords" content="${escapeHtml((page.searchTerms || '').split(',').slice(0,8).join(', '))}"><meta name="theme-color" content="#2f6fed"><meta name="google-site-verification" content="iah_huluCmfWfZhIDsoW2YW1HP9HJmICG1rkl1VXRqk">${robotsTag}${canonicalTag}<link rel="icon" href="${pageUrl('/assets/favicon-wifi.png')}" type="image/png" sizes="64x64"><link rel="shortcut icon" href="${pageUrl('/assets/favicon-wifi.png')}" type="image/png"><link rel="apple-touch-icon" href="${pageUrl('/assets/favicon-wifi.png')}" sizes="64x64"><link rel="stylesheet" href="${pageUrl('/assets/style-v8.css')}"><link rel="stylesheet" href="${pageUrl('/assets/seo-enhancements.css')}">${socialTags}${schema}</head><body><a class="skip-link" href="#main">Skip to content</a>${header()}${hero}${utility}<div id="main">${main}</div>${bottomNav()}${footer()}<script src="${pageUrl('/assets/app-v2.js')}" defer></script></body></html>`;
 }
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(join(dist, 'assets'), { recursive: true });
 await mkdir(join(dist, 'assets'), { recursive: true });
-for (const asset of ['style-v8.css','logo-wifi.png','favicon-wifi.png','founder-md-juyel.jpg']) await copyFile(join(root,'public/assets',asset), join(dist,'assets',asset));
-const searchIndex = pages.map(p => ({ title:p.h1, description:p.description, path:pageUrl(p.slug), keywords:[p.h1, p.label, p.searchTerms || '', p.slug.replaceAll('/',' ').replaceAll('-',' ')] }));
+for (const asset of ['style-v8.css','seo-enhancements.css','logo-wifi.png','favicon-wifi.png','founder-md-juyel.jpg','find-your-gateway.svg','router-login-flow.svg','restart-vs-factory-reset.svg']) await copyFile(join(root,'public/assets',asset), join(dist,'assets',asset));
+const searchIndex = indexablePages.map(p => ({ title:p.h1, description:p.description, path:pageUrl(p.slug), keywords:[p.h1, p.label, p.searchTerms || '', p.slug.replaceAll('/',' ').replaceAll('-',' ')] }));
 const qrLibrary = await readFile(join(root, 'node_modules/qrcode-generator/qrcode.js'), 'utf8');
 const appJs = qrLibrary + `
 (() => {
@@ -231,21 +245,105 @@ const appJs = qrLibrary + `
   }
   document.querySelectorAll('[data-copy-ip]').forEach(btn => btn.addEventListener('click', async () => { try { await navigator.clipboard.writeText(btn.dataset.copyIp); const old = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => btn.textContent = old, 1200); } catch { btn.textContent = 'Copy manually'; } }));
   document.querySelectorAll('[data-copy-guide]').forEach(btn => btn.addEventListener('click', async () => { try { await navigator.clipboard.writeText(location.href); const old = btn.textContent; btn.textContent = 'Link copied'; setTimeout(() => btn.textContent = old, 1400); } catch { btn.textContent = 'Copy from address bar'; } }));
-    const form = document.querySelector('#site-search');
-  const input = document.querySelector('#search-input');
-  const results = document.querySelector('#search-results');
-  if (form && input && results) {
-    let index = [];
-    fetch('${pageUrl('/search-index.json')}').then(r => r.json()).then(x => { index = x; }).catch(() => {});
-    const show = () => {
-      const q = input.value.trim().toLowerCase();
-      if (!q) { results.style.display = 'none'; results.innerHTML = ''; return; }
-      const hits = index.filter(item => (item.title + ' ' + item.description + ' ' + item.keywords.join(' ')).toLowerCase().includes(q)).slice(0, 6);
-      results.innerHTML = hits.length ? hits.map(x => '<a href="' + x.path + '"><strong>' + x.title + '</strong><small>' + x.description + '</small></a>').join('') : '<div style="padding:14px;color:#60708c">No matching guide yet. Try a common router IP.</div>';
-      results.style.display = 'block';
-    };
-    input.addEventListener('input', show);
-    form.addEventListener('submit', e => { e.preventDefault(); const first = results.querySelector('a'); if (first) location.href = first.href; else show(); });
+  const searchWidgets = [...document.querySelectorAll('[data-search-widget]')];
+  if (searchWidgets.length) {
+    const searchIndexRequest = fetch('${pageUrl('/search-index.json')}').then(response => {
+      if (!response.ok) throw new Error('Search index unavailable');
+      return response.json();
+    }).then(data => Array.isArray(data) ? data : null).catch(() => null);
+    const normalize = value => String(value || '').normalize('NFKC').toLowerCase().replace(/\\s+/g,' ').trim();
+    searchWidgets.forEach(widget => {
+      const form = widget.querySelector('form');
+      const input = widget.querySelector('[data-search-input]');
+      const results = widget.querySelector('[data-search-results]');
+      if (!form || !input || !results) return;
+      let searchData = [];
+      let ready = false;
+      let failed = false;
+      const hide = () => { results.hidden = true; input.setAttribute('aria-expanded','false'); };
+      const showMessage = (text, withBrowse=false) => {
+        const p = document.createElement('p');
+        p.className = 'search-empty';
+        p.append(document.createTextNode(text));
+        if (withBrowse) {
+          const link = document.createElement('a');
+          link.href = '${pageUrl('/all-guides/')}';
+          link.textContent = 'Browse all guides';
+          p.append(document.createTextNode(' '), link);
+        }
+        results.appendChild(p);
+      };
+      const render = () => {
+        const query = normalize(input.value);
+        results.replaceChildren();
+        if (!query) { hide(); return; }
+        results.hidden = false;
+        input.setAttribute('aria-expanded','true');
+        if (!ready) { showMessage('Loading guides…'); return; }
+        if (failed) { showMessage('Search is temporarily unavailable.', true); return; }
+        const terms = query.split(' ').filter(Boolean);
+        const hits = searchData.map(item => {
+          const title = normalize(item.title || '');
+          const description = normalize(item.description || '');
+          const keywords = normalize(Array.isArray(item.keywords) ? item.keywords.join(' ') : (item.keywords || ''));
+          const searchable = title + ' ' + description + ' ' + keywords;
+          if (!terms.every(term => searchable.includes(term))) return null;
+          let target;
+          try { target = new URL(item.path, location.href); } catch { return null; }
+          if (target.origin !== location.origin) return null;
+          const score = terms.reduce((sum, term) => sum + (title.includes(term) ? 4 : 0) + (keywords.includes(term) ? 1 : 0), 0) + (title.includes(query) ? 2 : 0);
+          return { item, score, href: target.href };
+        }).filter(Boolean).sort((a,b) => b.score - a.score).slice(0,6);
+        if (!hits.length) { showMessage('No exact match yet.', true); return; }
+        hits.forEach(({item,href}) => {
+          const link = document.createElement('a');
+          link.href = href;
+          const title = document.createElement('strong');
+          title.textContent = item.title || 'Router guide';
+          const description = document.createElement('small');
+          description.textContent = item.description || '';
+          link.append(title, description);
+          results.appendChild(link);
+        });
+      };
+      input.addEventListener('input', render);
+      input.addEventListener('keydown', event => {
+        if (event.key === 'Escape') { hide(); return; }
+        if (event.key === 'ArrowDown') {
+          const first = results.querySelector('a');
+          if (first) { event.preventDefault(); first.focus(); }
+        }
+      });
+      results.addEventListener('keydown', event => {
+        const links = [...results.querySelectorAll('a')];
+        const current = event.target.closest('a');
+        const position = links.indexOf(current);
+        if (event.key === 'Escape') { event.preventDefault(); hide(); input.focus(); return; }
+        if (event.key === 'ArrowDown' && position >= 0 && position < links.length - 1) { event.preventDefault(); links[position + 1].focus(); }
+        if (event.key === 'ArrowUp') {
+          if (position > 0) { event.preventDefault(); links[position - 1].focus(); }
+          else if (position === 0) { event.preventDefault(); input.focus(); }
+        }
+        if (event.key === 'Home' && links.length) { event.preventDefault(); links[0].focus(); }
+        if (event.key === 'End' && links.length) { event.preventDefault(); links[links.length - 1].focus(); }
+      });
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        if (!ready) { render(); return; }
+        render();
+        const first = results.querySelector('a');
+        if (first) location.assign(first.href);
+        else input.focus();
+      });
+      widget.addEventListener('focusout', () => { setTimeout(() => { if (!widget.contains(document.activeElement)) hide(); }, 0); });
+      document.addEventListener('pointerdown', event => { if (!widget.contains(event.target)) hide(); });
+      searchIndexRequest.then(data => {
+        searchData = data || [];
+        failed = !Array.isArray(data);
+        ready = true;
+        if (input.value.trim()) render();
+      });
+    });
   }
   const cidrBtn=document.querySelector('#cidr-button');
   if(cidrBtn){cidrBtn.addEventListener('click',()=>{const input=document.querySelector('#cidr-input').value.trim();const out=document.querySelector('#cidr-result');const parts=input.split('/');const octets=(parts[0]||'').split('.');const prefixText=parts[1]||'';const valid=octets.length===4&&octets.every(x=>/^[0-9]+$/.test(x)&&Number(x)<=255)&&/^[0-9]+$/.test(prefixText)&&Number(prefixText)<=32;const m=valid?[input,...octets,prefixText]:null;if(!m){out.textContent='Enter a valid IPv4 CIDR such as 192.168.1.0/24.';return;}const oct=m.slice(1,5).map(Number), prefix=Number(m[5]);if(oct.some(x=>x>255)){out.textContent='Each IPv4 octet must be between 0 and 255.';return;}const ip=(((oct[0]*256+oct[1])*256+oct[2])*256+oct[3])>>>0;const mask=prefix===0?0:(0xffffffff << (32-prefix))>>>0;const network=(ip&mask)>>>0;const broadcast=(network + (2**(32-prefix)-1))>>>0;const fmt=n=>[(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.');const total=2**(32-prefix);const usable=prefix>=31? (prefix===32?1:2):Math.max(0,total-2);out.innerHTML='<strong>'+fmt(network)+'/'+prefix+'</strong><br>Mask: '+fmt(mask)+' · Network: '+fmt(network)+' · Broadcast: '+fmt(broadcast)+'<br>Range: '+fmt(prefix>=31?network:network+1)+' – '+fmt(prefix>=31?broadcast:broadcast-1)+' · Total: '+total+' · Conventional usable: '+usable;});}
@@ -256,7 +354,7 @@ const appJs = qrLibrary + `
   const portBtn=document.querySelector('#port-check-button');
   if(portBtn) portBtn.addEventListener('click',()=>{const host=document.querySelector('#port-host').value.trim(), port=Number(document.querySelector('#port-number').value), out=document.querySelector('#port-result');out.textContent=host && port>=1 && port<=65535?'A production probe must verify one authorised target with a disclosed vantage point. This static build does not claim an open/closed result.':'Enter one valid authorised host and a port from 1 to 65535.';});
   const addressBtn=document.querySelector('#v2-address-button');
-  if(addressBtn) addressBtn.addEventListener('click',()=>{const raw=document.querySelector('#v2-address-input').value.trim(),out=document.querySelector('#v2-address-result'),m=raw.match(/^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)$/);if(!m){out.textContent='সঠিক IPv4 লিখুন, যেমন 192.168.1.1।';return;}const a=m.slice(1).map(Number),valid=a.every(n=>n>=0&&n<=255),private=(a[0]===10)||(a[0]===172&&a[1]>=16&&a[1]<=31)||(a[0]===192&&a[1]===168);if(!valid){out.textContent='প্রতিটি অংশ 0 থেকে 255-এর মধ্যে হতে হবে।';return;}out.innerHTML='<strong>'+raw+' বৈধ IPv4 address।</strong><br>'+ (private?'এটি private range-এর মধ্যে পড়ে।':'এটি private home-router range নয়।')+'<br><small>এটি আপনার gateway বা admin address প্রমাণ করে না; connected device-এর gateway যাচাই করুন।</small>';});
+  if(addressBtn) addressBtn.addEventListener('click',()=>{const raw=document.querySelector('#v2-address-input').value.trim(),out=document.querySelector('#v2-address-result'),m=raw.match(/^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)$/);if(!m){out.textContent='সঠিক IPv4 লিখুন, যেমন 192.168.1.1।';return;}const a=m.slice(1).map(Number),valid=a.every(n=>n>=0&&n<=255),isPrivateRange=(a[0]===10)||(a[0]===172&&a[1]>=16&&a[1]<=31)||(a[0]===192&&a[1]===168);if(!valid){out.textContent='প্রতিটি অংশ 0 থেকে 255-এর মধ্যে হতে হবে।';return;}out.innerHTML='<strong>'+raw+' বৈধ IPv4 address।</strong><br>'+ (isPrivateRange?'এটি private range-এর মধ্যে পড়ে।':'এটি private home-router range নয়।')+'<br><small>এটি আপনার gateway বা admin address প্রমাণ করে না; connected device-এর gateway যাচাই করুন।</small>';});
   document.querySelectorAll('[data-v2-decision]').forEach(btn=>btn.addEventListener('click',()=>{const out=document.querySelector('#v2-decision-result'),messages={slow:'প্রথমে gateway, cable, Wi‑Fi ও power-cycle পরীক্ষা করুন। Factory reset এখনই দরকার নেই।',password:'Model-specific recovery, label ও setup record দেখুন। Credential অনুমান করবেন না; reset শেষ বিকল্প।',config:'Backup থাকলে প্রস্তুত রাখুন। Exact model instructions দেখে শেষ বিকল্প হিসেবে factory reset বিবেচনা করুন।'};out.innerHTML='<strong>পরবর্তী নিরাপদ ধাপ:</strong> '+messages[btn.dataset.v2Decision];}));
   const v2Checks=[...document.querySelectorAll('[data-v2-check]')];
   if(v2Checks.length){const out=document.querySelector('#v2-check-result'),refresh=()=>{const done=v2Checks.filter(x=>x.checked).length; if(out) out.textContent=done+' / '+v2Checks.length+'টি item সম্পন্ন। পরিবর্তন করার আগে model ও ISP নির্দেশনা যাচাই করুন।';};v2Checks.forEach(x=>x.addEventListener('change',refresh));refresh();}
@@ -264,9 +362,9 @@ const appJs = qrLibrary + `
 await writeFile(join(dist, 'assets/app-v2.js'), appJs);
 await writeFile(join(dist, 'search-index.json'), JSON.stringify(searchIndex, null, 2));
 for (const page of pages) { const file = page.slug === '/' ? join(dist,'index.html') : join(dist,page.slug.replace(/^\//,'') ,'index.html'); await mkdir(dirname(file), {recursive:true}); await writeFile(file, layout(page)); }
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map(p=>`  <url><loc>${canonical(p.slug)}</loc></url>`).join('\n')}\n</urlset>\n`;
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${indexablePages.map(p=>`  <url><loc>${canonical(p.slug)}</loc></url>`).join('\n')}\n</urlset>\n`;
   await writeFile(join(dist,'sitemap.xml'), sitemap);
-  await writeFile(join(dist,'sitemap.txt'), `${pages.map(p=>canonical(p.slug)).join('\n')}\n`);
+  await writeFile(join(dist,'sitemap.txt'), `${indexablePages.map(p=>canonical(p.slug)).join('\n')}\n`);
   await writeFile(join(dist,'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${canonical('/sitemap.xml')}\nSitemap: ${canonical('/sitemap.txt')}\n`);
   await writeFile(join(dist,'_redirects'), `/about /about/ 301\n`);
   await writeFile(join(dist,'manus-routes.json'), JSON.stringify({routes:pages.map(p=>({path:pageUrl(p.slug),title:p.h1}))}, null, 2));

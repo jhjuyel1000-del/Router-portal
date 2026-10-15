@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+<title id="title">Find your actual router gateway</title><desc id="desc">Three safe steps: connect to the correct network, find the Default Gateway on your device, then enter it in the browser address bar.</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eef5ff"/><stop offset="1" stop-color="#f7f3ff"/></linearGradient><linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3177ee"/><stop offset="1" stop-color="#6657dd"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#15366b" flood-opacity=".12"/></filter></defs>
+<rect width="1200" height="640" rx="32" fill="url(#bg)"/>
+<circle cx="1100" cy="72" r="120" fill="#dce8ff" opacity=".58"/><circle cx="80" cy="600" r="130" fill="#e6e0ff" opacity=".5"/>
+<text x="64" y="80" fill="#122443" font-family="Inter,Arial,sans-serif" font-size="38" font-weight="800">Find your actual router address</text>
+<text x="64" y="122" fill="#596985" font-family="Inter,Arial,sans-serif" font-size="21">The Default Gateway is more reliable than guessing a common IP.</text>
+<g filter="url(#shadow)">
+  <rect x="54" y="176" width="340" height="330" rx="24" fill="#fff"/>
+  <rect x="430" y="176" width="340" height="330" rx="24" fill="#fff"/>
+  <rect x="806" y="176" width="340" height="330" rx="24" fill="#fff"/>
+</g>
+<g font-family="Inter,Arial,sans-serif">
+  <circle cx="94" cy="218" r="23" fill="url(#blue)"/><text x="94" y="226" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+  <text x="78" y="274" font-size="23" font-weight="800" fill="#162847">Connect first</text>
+  <text x="78" y="312" font-size="17" fill="#5d6c85">Join the Wi-Fi or Ethernet</text><text x="78" y="337" font-size="17" fill="#5d6c85">network of the router you</text><text x="78" y="362" font-size="17" fill="#5d6c85">are allowed to manage.</text>
+  <rect x="78" y="398" width="292" height="72" rx="14" fill="#eef5ff"/>
+  <path d="M99 429 q19 -19 38 0 M107 437 q11 -11 22 0 M117 445 q1 -1 2 0" fill="none" stroke="#2869d6" stroke-width="4" stroke-linecap="round"/><circle cx="118" cy="452" r="3.8" fill="#2869d6"/>
+  <text x="151" y="431" font-size="15" font-weight="700" fill="#234775">Same network</text><text x="151" y="452" font-size="14" fill="#596985">Turn off mobile data if needed</text>
+  <circle cx="470" cy="218" r="23" fill="url(#blue)"/><text x="470" y="226" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+  <text x="454" y="274" font-size="23" font-weight="800" fill="#162847">Find the gateway</text>
+  <text x="454" y="312" font-size="17" fill="#5d6c85">Windows: run</text><text x="454" y="338" font-size="17" fill="#5d6c85" font-weight="700">ipconfig</text><text x="454" y="370" font-size="17" fill="#5d6c85">Phone: open connected</text><text x="454" y="395" font-size="17" fill="#5d6c85">Wi-Fi details.</text>
+  <rect x="454" y="418" width="292" height="52" rx="12" fill="#122443"/><text x="600" y="450" font-size="18" font-weight="800" fill="#e8f2ff" text-anchor="middle">Default Gateway</text>
+  <circle cx="846" cy="218" r="23" fill="url(#blue)"/><text x="846" y="226" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+  <text x="830" y="274" font-size="23" font-weight="800" fill="#162847">Open it directly</text>
+  <text x="830" y="312" font-size="17" fill="#5d6c85">Type the exact address into</text><text x="830" y="337" font-size="17" fill="#5d6c85">your browser address bar—</text><text x="830" y="362" font-size="17" fill="#5d6c85">not the search box.</text>
+  <rect x="830" y="398" width="292" height="72" rx="14" fill="#eef5ff"/><circle cx="858" cy="433" r="12" fill="none" stroke="#2869d6" stroke-width="3"/><path d="M867 442 l10 10" stroke="#2869d6" stroke-width="3" stroke-linecap="round"/><text x="895" y="431" font-size="15" font-weight="700" fill="#234775">Example only</text><text x="895" y="453" font-size="14" fill="#596985">192.168.1.1 is not universal</text>
+</g>
+<path d="M399 337 h24 m-8 -8 8 8 -8 8 M775 337 h24 m-8 -8 8 8 -8 8" fill="none" stroke="#7b8cb0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="64" y="568" fill="#314563" font-family="Inter,Arial,sans-serif" font-size="17" font-weight="700">Safety note</text><text x="64" y="596" fill="#596985" font-family="Inter,Arial,sans-serif" font-size="16">Addresses and sign-in steps vary by router model, firmware, network mode and internet provider.</text>
+</svg>
