@@ -195,8 +195,115 @@ for (const page of pages) {
     page.body = inserted === page.body ? `${page.body}${guideDiagrams[page.slug]}` : inserted;
   }
 }
-const allGuideLinks = pages.map(p => `<li><a href="${pageUrl(p.slug)}">${p.h1}</a><span>${p.label}</span></li>`).join('');
-pages.push({ slug:'/all-guides/', title:'Router Guides: Login, Wi-Fi, IP & Troubleshooting | Router Portal', description:'Find step-by-step router login, gateway IP, Wi-Fi, setup, brand and security guides. Search by address or problem, then confirm your exact model before changing settings.', label:'All Router Portal guides', h1:'Router login, Wi-Fi, IP and troubleshooting guides', intro:'Browse practical guides by address, brand, setup task or common Wi-Fi problem.', searchTerms:'all router guides, router tools directory, router IP guides, Wi-Fi guides, network security guides', body:`<div class="answer-lead"><strong>Find any page:</strong> Browse the complete Router Portal directory below, or use the site search to find a router IP, model, tool, Wi-Fi topic, or troubleshooting guide.</div><div class="guide-directory"><ul>${allGuideLinks}</ul></div><div class="notice"><strong>Safety reminder:</strong> Use router instructions only for a device and network you own or are authorised to manage. Never send Router Portal a router password or Wi-Fi key.</div>`});
+const guideCategoryDefinitions = [
+  {
+    id: 'router-access',
+    title: 'Router login and password help',
+    description: 'Open the admin page, recover access, and distinguish router credentials from Wi-Fi passwords.'
+  },
+  {
+    id: 'ip-gateway',
+    title: 'IP addresses and gateway guides',
+    description: 'Find a local address, understand the default gateway, and check address-specific guidance.'
+  },
+  {
+    id: 'wifi-network',
+    title: 'Wi-Fi and network troubleshooting',
+    description: 'Work through connection, coverage, speed, and home-network issues.'
+  },
+  {
+    id: 'setup-isp',
+    title: 'Router setup, ISP, and mesh guides',
+    description: 'Set up equipment, understand provider gateways, and improve a mesh or home-network layout.'
+  },
+  {
+    id: 'brands-models',
+    title: 'Router brands, models, and buying guides',
+    description: 'Browse brand and model guidance; verify hardware revision and firmware before applying a step.'
+  },
+  {
+    id: 'security-admin',
+    title: 'Router security and administration',
+    description: 'Review safer settings and network protection without relying on universal defaults.'
+  },
+  {
+    id: 'tools-learning',
+    title: 'Network tools and explainers',
+    description: 'Use browser-based helpers and plain-language networking references.'
+  },
+  {
+    id: 'other',
+    title: 'About, policies, and other guides',
+    description: 'Find site information, editorial policies, and topics outside the main groups.'
+  }
+];
+
+function guideCategoryFor(page) {
+  const { slug } = page;
+  const accessPages = [
+    '/router-login/', '/router-login-not-working/', '/forgot-router-password/',
+    '/default-router-passwords/', '/change-router-admin-password/',
+    '/router-model-login/', '/factory-reset-router/'
+  ];
+
+  if (accessPages.includes(slug)) return 'router-access';
+  if (slug.startsWith('/ip/') || slug.startsWith('/gateway/') || slug.startsWith('/device/') || slug === '/find-router-ip/') return 'ip-gateway';
+  if (slug.startsWith('/wifi/') || slug.startsWith('/network/') || slug.startsWith('/troubleshooting/') || slug.startsWith('/performance/') || slug === '/change-wifi-password/') return 'wifi-network';
+  if (slug.startsWith('/setup/') || slug.startsWith('/isp/') || slug.startsWith('/mesh/') || slug.startsWith('/maintenance/')) return 'setup-isp';
+  if (slug.startsWith('/brand/') || slug.startsWith('/model/') || slug.startsWith('/models/') || slug.startsWith('/reviews/') || slug === '/brand-router-model-search/') return 'brands-models';
+  if (slug.startsWith('/security/') || slug.startsWith('/admin/') || slug === '/port-forwarding/') return 'security-admin';
+  if (slug.startsWith('/tools/') || slug.startsWith('/basics/') || slug.startsWith('/diagnostics/') || slug === '/traceroute/') return 'tools-learning';
+  return 'other';
+}
+
+const guideDirectoryGroups = guideCategoryDefinitions.map(category => ({
+  ...category,
+  pages: pages.filter(page => guideCategoryFor(page) === category.id)
+}));
+const guideDirectorySlugs = guideDirectoryGroups.flatMap(group => group.pages.map(page => page.slug));
+if (guideDirectorySlugs.length !== pages.length || new Set(guideDirectorySlugs).size !== pages.length) {
+  throw new Error('Guide directory groups must include every existing page exactly once.');
+}
+
+const guideCategoryNav = `
+  <nav class="guide-topic-nav" aria-label="Router guide topics">
+    <strong>Browse by topic</strong>
+    ${guideDirectoryGroups.filter(group => group.pages.length).map(group =>
+    `<a href="#guide-category-${group.id}">${escapeHtml(group.title)}</a>`
+  ).join('')}
+  </nav>
+`;
+const guideDirectoryHtml = guideDirectoryGroups.filter(group => group.pages.length).map(group => `
+  <section class="guide-category" id="guide-category-${group.id}">
+    <h2>${escapeHtml(group.title)} <span>(${group.pages.length} pages)</span></h2>
+    <p>${escapeHtml(group.description)}</p>
+    <ul>
+      ${group.pages.map(page => `
+        <li>
+          <a href="${pageUrl(page.slug)}">${escapeHtml(page.h1)}</a>
+          <span>${escapeHtml(page.label)}</span>
+        </li>
+      `).join('')}
+    </ul>
+  </section>
+`).join('');
+
+pages.push({
+  slug: '/all-guides/',
+  title: 'Router Guide Directory: Login, Wi-Fi, IP & Setup | Router Portal',
+  description: 'Browse router login, IP, Wi-Fi, setup, security, brand and model guides. Search by topic, address or problem to find a safe next step.',
+  label: 'All Router Portal guides',
+  h1: 'Router login, Wi-Fi, IP and troubleshooting guides',
+  intro: 'Browse practical guides by address, brand, setup task or common Wi-Fi problem.',
+  searchTerms: 'all router guides, router tools directory, router IP guides, Wi-Fi guides, network security guides',
+  body: `
+    <div class="answer-lead"><strong>Find any page:</strong> Browse the complete Router Portal directory below, or use the site search to find a router IP, model, tool, Wi-Fi topic, or troubleshooting guide.</div>
+    <h2>Choose a topic</h2>
+    ${guideCategoryNav}
+    <div class="guide-directory guide-directory--grouped">${guideDirectoryHtml}</div>
+    <div class="notice"><strong>Safety reminder:</strong> Use router instructions only for a device and network you own or are authorised to manage. Never send Router Portal a router password or Wi-Fi key.</div>
+  `
+});
 const duplicateSlugs = pages.map(p => p.slug).filter((slug, i, all) => all.indexOf(slug) !== i);
 if (duplicateSlugs.length) throw new Error(`Duplicate page slugs: ${[...new Set(duplicateSlugs)].join(', ')}`);
 const indexablePages = pages.filter(page => page.noindex !== true && page.indexEligible !== false && !page.redirectTo);
