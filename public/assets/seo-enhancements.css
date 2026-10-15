@@ -1,0 +1,206 @@
+/* Router Portal: accessible site-wide search and responsive editorial diagrams. */
+.nav {
+  gap: 14px;
+}
+
+.portal-desktop-nav {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.portal-global-search {
+  position: relative;
+  flex: 0 1 285px;
+  min-width: 185px;
+  margin-left: auto;
+}
+
+.portal-global-search .search-wrap {
+  position: relative;
+  margin: 0;
+}
+
+.portal-global-search .search-shell {
+  display: flex;
+  width: 100%;
+  max-width: none;
+  gap: 5px;
+  margin: 0;
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.portal-global-search .search-shell input {
+  flex: 1 1 auto;
+  width: 0;
+  min-width: 0;
+  padding: 9px 10px;
+  font-size: 14px;
+}
+
+.portal-global-search .search-shell .button {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 8px 12px;
+}
+
+.search-results[hidden] {
+  display: none !important;
+}
+
+.search-results:not([hidden]) {
+  display: block;
+}
+
+.portal-global-search .search-results {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 7px);
+  right: 0;
+  width: min(420px, 88vw);
+  max-height: min(65vh, 460px);
+  margin: 0;
+  overflow: auto;
+  border-color: #d8e2ef;
+  box-shadow: 0 16px 40px rgba(17, 40, 76, .18);
+}
+
+.search-results a {
+  color: var(--ink, #17304f);
+  text-decoration: none;
+}
+
+.search-results a:hover,
+.search-results a:focus-visible {
+  background: #f2f6ff;
+  outline: 2px solid #2f6fed;
+  outline-offset: -2px;
+}
+
+.search-empty {
+  margin: 0;
+  padding: 14px;
+  color: var(--muted, #60708c);
+}
+
+.search-empty a {
+  display: inline;
+  padding: 0;
+  border: 0;
+  color: var(--primary, #2f6fed);
+  text-decoration: underline;
+}
+
+.demo-hero .search-wrap {
+  position: relative;
+}
+
+.demo-hero .search-results {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 7px);
+  right: 0;
+  left: 0;
+  max-height: min(50vh, 400px);
+  margin: 0;
+  overflow: auto;
+  box-shadow: 0 16px 40px rgba(17, 40, 76, .18);
+}
+
+.guide-diagram {
+  margin: 1.5rem 0;
+  padding: .75rem;
+  overflow: hidden;
+  border: 1px solid #dce5f2;
+  border-radius: 16px;
+  background: #f8faff;
+}
+
+.guide-diagram img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.guide-diagram figcaption {
+  padding: .65rem .25rem .1rem;
+  color: var(--muted, #60708c);
+  font-size: .92rem;
+  line-height: 1.5;
+}
+
+@media (min-width: 901px) and (max-width: 1100px) {
+  .nav {
+    gap: 9px;
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .portal-desktop-nav a {
+    padding-right: 6px;
+    padding-left: 6px;
+    font-size: 12px;
+  }
+
+  .portal-global-search {
+    flex-basis: 225px;
+    min-width: 165px;
+  }
+}
+
+@media (max-width: 900px) {
+  .nav {
+    height: auto;
+    min-height: 64px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .portal-desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: block;
+    margin-left: auto;
+  }
+
+  .portal-global-search {
+    order: 3;
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin: 0 0 5px;
+  }
+
+  .portal-global-search .search-results {
+    right: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .portal-global-search .search-shell input {
+    font-size: 16px;
+  }
+
+  .portal-global-search .search-shell .button {
+    min-height: 44px;
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .guide-diagram {
+    margin: 1rem 0;
+    padding: .45rem;
+    border-radius: 12px;
+  }
+}

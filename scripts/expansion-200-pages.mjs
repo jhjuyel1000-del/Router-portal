@@ -320,7 +320,7 @@ function makePage(kind, item, index, pageUrl){
     <h2>Limits and verification</h2><p>Router menus, firmware, hardware revisions, radio regulations, operating systems, ISP policies, and cloud-managed features change over time. A search result, an advertised speed, or a single successful test is not proof that every device behaves the same way. Confirm the exact model and region, back up a known-good configuration before risky changes, and keep private network evidence private.</p>
     <h2>Official references</h2><ul>${sourceLinks(kind)}</ul>
     <h2>Related Router Portal guides</h2><p>${rel.map(([label,path])=>`<a href="${pageUrl(path)}">${esc(label)}</a>`).join(' · ')}</p>
-    <p><strong>Editorial note:</strong> This is one distinct research-backed question, not a keyword variation of another page. Recheck the cited documentation when firmware, provider policy, or device support changes.</p>`};
+    `};
 }
 
 export function makeExpansionPages(pageUrl){
